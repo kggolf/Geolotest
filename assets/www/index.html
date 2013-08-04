@@ -42,15 +42,18 @@ body {
     
 <script src="http://code.jquery.com/jquery-latest.js"></script>    
 <script type="text/javascript">  
+
+        var options = { timeout: 30000 };
+        var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
+
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
 var arr_path=[]; // กำหนดตัวแปรสำหรับเก็บค่าอาเรย์ ตำแหน่ง path  
 var makePolyline; // กำหนดตัวแปร ฟังก์ชั่น สร้างเส้น polylines  
 var objPolylines=[]; // กำหนดตัวแปรสำหรับเก็บค่า object ของ polylines  
-function initialize() { // ฟังก์ชันแสดงแผนที่  
+function initialize(position) { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
     // กำหนดจุดเริ่มต้นของแผนที่  
-    navigator.geolocation.getCurrentPosition(function(position) { 
     var my_Latlng  =  new GGM.LatLng(position.coords.latitude,position.coords.longitude); 
     var my_mapTypeId=GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง  
     // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas  
@@ -85,8 +88,12 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
     GGM.event.addListener(map, "zoom_changed", function() {  
         $("#zoom_value").val(map.getZoom()); // เอาขนาด zoom ของแผนที่แสดงใน textbox id=zoom_value    
     });  
-    });
 }  
+
+function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
   
 makePolyline=function(arr_path){  
 //  console.log(arr_path.length);  

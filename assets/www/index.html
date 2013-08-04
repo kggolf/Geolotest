@@ -83,16 +83,14 @@
     
     
     */
-
-
-	function autoUpdate() {
-
 	var map = new google.maps.Map(document.getElementById("map_canvas"), {
 	zoom: 15,
 	mapTypeId: google.maps.MapTypeId.ROADMAP
 	});
 
 	var marker = null;
+
+	function autoUpdate() {
 
 	navigator.geolocation.getCurrentPosition(function(position) {  
     var newPoint = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);

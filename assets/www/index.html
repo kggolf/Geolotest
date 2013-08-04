@@ -30,7 +30,7 @@
 
     // Wait for Cordova to load
     //
-    document.addEventListener("deviceready", onDeviceReady, false);
+   /* document.addEventListener("deviceready", onDeviceReady, false);
 
     var watchID = null;
 
@@ -82,7 +82,42 @@
     }
     
     
-    
+    */
+
+
+	function autoUpdate() {
+
+	var map = new google.maps.Map(document.getElementById("map_canvas"), {
+	zoom: 15,
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+	});
+
+	var marker = null;
+
+	navigator.geolocation.getCurrentPosition(function(position) {  
+    var newPoint = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+
+    if (marker) {
+      // Marker already created - Move it
+      marker.setPosition(newPoint);
+    }
+    else {
+      // Marker does not exist - Create it
+      marker = new google.maps.Marker({
+        position: newPoint,
+        map: map
+      });
+    }
+
+    // Center the map on the new position
+    map.setCenter(newPoint);
+  }); 
+
+  // Call the autoUpdate() function every 5 seconds
+  setTimeout(autoUpdate, 5000);
+}
+
+autoUpdate();
     
     
     // ----------------------Time Set--------------------------------------------------
@@ -147,7 +182,7 @@
     
     </script>
   </head>
-  <body onload="onDeviceReady()">
+  <body onload="autoUpdate()">
     
     <div data-role="page" id="page">
 

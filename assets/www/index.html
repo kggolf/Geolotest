@@ -1,187 +1,89 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE html>
+
 <html>
 <head>
-<meta name="viewport" content="width=320; user-scalable=no" />
-<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
-<title>RunforHealth</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-    <script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    
-<!-- CSS Style Sheet -->
-<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
-<link rel="stylesheet" href="css/jquery.mobile.structure-1.3.1.css">
+<style type="text/css">
+  html { height: 90% }
+  body { height: 90%; margin: 0; padding: 0 }
+  #map_canvas { height: 100% }
+</style>
+<script type="text/javascript"
+    src="http://maps.googleapis.com/maps/api/js?sensor=false">
+</script>
 
-<!-- JQM  -->
-<script src="js/jquery-1.9.0.js"></script>
-<script src="js/jquery.mobile-1.3.1.min.js"></script>
+<script type="text/javascript">
+var poly;
+var map;
+  function initialize() {
+    var latlng = new google.maps.LatLng(38.698044, -77.210411);
+    var myOptions = {
+      zoom: 8,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+
+
+     //var myLatLng = new google.maps.LatLng(0, -180);
+  }
+
+
+  var polyOptions = {
+    strokeColor: '#000000',
+    strokeOpacity: 1.0,
+    strokeWeight: 3
+  }
+  poly = new google.maps.Polyline(polyOptions);
+  poly.setMap(map);
+
+var path = new MVCArray;
+
+$.getJSON('json.php', function(data) {
+  //var items = [];
+  $.each(data, function(key, val) {
+
+
+  path.push(new google.maps.LatLng(val.lat, val.longi));
+
+  });
+
+});
 
 
 
-	<style type="text/css">
-	html {height:100%}
-	body {height:100%; margin:0; padding:0}
-	#map_canvas {height:100%; width:100%}
-	</style>
+  var myOptions = {
+    zoom: 12,
+    //center: myLatLng,
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  };
 
-<!-- Java Script System -->
-<script type="text/javascript" charset="utf-8">
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 
-    // Wait for Cordova to load
-    //
-    document.addEventListener("deviceready", onDeviceReady, false);
 
-    var watchID = null;
 
-    // Cordova is ready
-    //
-    
-    function onDeviceReady() {
-        // Throw an error if no update is received every 30 seconds
-        var options = { timeout: 30000 };
-        watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
-    }
 
-    // onSuccess Geolocation
-    //
-    function onSuccess(position) {
-                      
-      mapSetup(position.coords.latitude,position.coords.longitude);
-        
-      function mapSetup(lat,long){
 
-      console.log("setting up map");
-	var firstLoc = new google.maps.LatLng(lat,long);
-	var myOptions = {
-		zoom: 17,
-		center: firstLoc,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
 
-	var map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
-	
-	var marker = new google.maps.Marker({
-      	position: firstLoc,
-     	map: map,
- 	});
- 
-	}
-	
-    	}
-    
-    
-    
-    
-    
-    // onError Callback receives a PositionError object
-    //
-    function onError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
-    }
-    
-    
-    
-    
-    
-    // ----------------------Time Set--------------------------------------------------
-  	var ms = 0;
-		var state = 0;
 
-		function startstop() {
-			if (state == 0) {
-			state = 1;
-			then = new Date();
-			then.setTime(then.getTime() - ms);
-			}   
-			else {
-			state = 0;
-			now = new Date();
-			ms = now.getTime() - then.getTime();
 
-			hours = Math.floor(ms%(1000 * 60 * 60 * 24)/(1000 * 60 * 60));
-			if (hours < 10)
-			hours = "0" + hours
+</head>
 
-			minutes = Math.floor((ms%(1000 * 60 * 60))/(1000 * 60));
-			if (minutes < 10)
-			minutes = "0" + minutes
+<body onload="initialize()">
+  <div id="map_canvas" style="width:90%; height:100%"></div>
 
-			seconds = Math.floor((ms%(1000 * 60))/1000);
-			if (seconds < 10)
-			seconds = "0" + seconds
-    	
-			document.all('timer').innerHTML = '<h1>'+hours+':'+minutes+':'+seconds+'</h1>';
-   	   		}
-		}
+</body>
 
-		function swreset() {
-			state = 0;
-			ms = 0;
-			document.all('timer').innerHTML = '<h1>00:00:00</h1>';
-		}
+</html>
 
-		function display() {
-		setTimeout("display();", 500);
-		if (state == 1)  {
-		now = new Date();
-		ms = now.getTime() - then.getTime();
-		hours = Math.floor(ms%(1000 * 60 * 60 * 24)/(1000 * 60 * 60));
-		if (hours < 10)
-		hours = "0" + hours
+<html>
+<head>
 
-		minutes_divisor = ms%(1000 * 60 * 60);
-		minutes = Math.floor(minutes_divisor/(1000 * 60));
-		if (minutes < 10)
-		minutes = "0" + minutes
+</head>
+<body>
 
-		seconds_divisor = ms%(1000 * 60);
-		seconds = Math.floor(seconds_divisor/1000);
-		if (seconds < 10)
-		seconds = "0" + seconds
-
-		document.all('timer').innerHTML = '<h1>'+hours+':'+minutes+':'+seconds+'</h1>';
-   		}
-		}
-    
-    </script>
-  </head>
-  <body onload="onDeviceReady()">
-    
-    <div data-role="page" id="page">
-
-	<div data-role="header" align="center" data-position="fixed">
-		<h1>RunforHealth</h1>
-	</div><br>
-	<table border="0" cellspacing="0" cellpadding="0" align="CENTER">
-	<tr>
-	<td colspan="2" width="351" height="251">
-	<div id="map_canvas" align="center"></div>
-	</td>
-	</tr>
-
-    </table>
-    <table border="0" cellspacing="0" cellpadding="0" align="CENTER">
-    <form NAME="stpw">
- <tr>
-	<td>
-    <h4>Time&nbsp;:&nbsp;</h4>
-    </td>
-    <td>
-	<div id="timer" class="logininput" align="center"><h1>00:00:00</h1></div>
-    </td>
-</tr>
-<tr>
-	<td colspan="2">
-	<div onClick="display()" >
-	<input TYPE="BUTTON" Name="ssbutton" VALUE="Start/Stop" onClick="startstop()">
-	<input TYPE="BUTTON" NAME="reset" VALUE="End" onClick="swreset()">
-	</div>
-	</form>
-    	</td>
-</tr>
-</table>
-</div>
-  </body>
+</body>
 </html>

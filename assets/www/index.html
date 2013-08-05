@@ -75,7 +75,7 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
     
       
     // กำหนด event ให้กับตัว marker เมื่อสิ้นสุดการลากตัว marker ให้ทำงานอะไร  
-    GGM.event.addListener(my_Marker, "bounds_changed", function() {  
+    GGM.event.addListener(map, "bounds_changed", function() {  
         var my_Point = my_Marker.getPosition(my_Latlng);  // หาตำแหน่งของตัว marker เมื่อกดลากแล้วปล่อย  
         arr_path.push(my_Point); // เพิ่มค่าตำแหน่ง จากตัว marker ตำแหน่งล่าสุด  
         map.panTo(my_Point);  // ให้แผนที่แสดงไปที่ตัว marker ล่าสุด  

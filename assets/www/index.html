@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="css/jquery.mobile.structure-1.3.1.css">
 
 <!-- JQM  -->
-<script src="js/jquery-1.9.0.js"></script>
-<script src="js/jquery.mobile-1.3.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.0.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.3.1.min.js"></script>
 
 
 
@@ -46,6 +46,9 @@
     // onSuccess Geolocation
     //
     function onSuccess(position) {
+    	var arr_path=[]; // กำหนดตัวแปรสำหรับเก็บค่าอาเรย์ ตำแหน่ง path  
+	var makePolyline; // กำหนดตัวแปร ฟังก์ชั่น สร้างเส้น polylines  
+	var objPolylines=[]; // กำหนดตัวแปรสำหรับเก็บค่า object ของ po
                       
       mapSetup(position.coords.latitude,position.coords.longitude);
         
@@ -65,15 +68,31 @@
       	position: firstLoc,
      	map: map,
  	});
+ 	
+ 	google.maps.event.addListener(map, "bounds_changed", function() {  
+        var my_Point = marker.getPosition(firstLoc);  // หาตำแหน่งของตัว marker เมื่อกดลากแล้วปล่อย  
+        arr_path.push(my_Point); // เพิ่มค่าตำแหน่ง จากตัว marker ตำแหน่งล่าสุด  
+        map.panTo(my_Point);  // ให้แผนที่แสดงไปที่ตัว marker ล่าสุด  
+                  
+        makePolyline(arr_path); // ส่งค่าตำแหน่งใน array ไปสร้างเส้น polylines ในแผนที่   
+    	}); 
  
 	}
 	
-    	}
-    
-    
-    
-    
-    
+	//สร้างเส้นใน map
+	makePolyline=function(arr_path){  
+	//  console.log(arr_path.length);  
+    	var i=arr_path.length-1;  
+    	objPolylines[i] = new GGM.Polyline({ // กำหนดรูปแบบของเส้น polylines  
+        path: arr_path,// array ตำแหน่งที่เก็บค่า lat,lon  
+        strokeColor: "#FF0000", // สี  
+        strokeOpacity: 1.0, // ความโปร่งใส  
+        strokeWeight: 2 //ความหน้าของเส้น  
+    	});   
+    	objPolylines[i].setMap(map);    // สร้างเส้น polylines ในแผนที่   
+	} 
+    }
+	 
     // onError Callback receives a PositionError object
     //
     function onError(error) {
@@ -82,9 +101,7 @@
     }
     
     
-    
-    
-    
+   
     // ----------------------Time Set--------------------------------------------------
   	var ms = 0;
 		var state = 0;
@@ -117,9 +134,15 @@
 		}
 
 		function swreset() {
+			//clear time
 			state = 0;
 			ms = 0;
 			document.all('timer').innerHTML = '<h1>00:00:00</h1>';
+			
+			//clear map
+			arr_path=[];      
+    			for(i=0;i<objPolylines.length;i++){  
+        		objPolylines[i].setMap(null); 
 		}
 
 		function display() {

@@ -40,6 +40,7 @@
                       
       mapSetup(position.coords.latitude,position.coords.longitude);
         
+      //MapSetup Function  
       function mapSetup(lat,long){
 
       console.log("setting up map");
@@ -65,34 +66,31 @@
         map.panTo(my_Point);  // ให้แผนที่แสดงไปที่ตัว marke
  	makePolyline(arr_path);
     	}); 
-    	
-    	
- 
 	}
+	
+	//Polyline Function
+	makePolyline=function(arr_path){   
+    	var i=arr_path.length-1;  
+    	objPolylines[i] = new GGM.Polyline({ // กำหนดรูปแบบของเส้น polylines  
+        path: arr_path,// array ตำแหน่งที่เก็บค่า lat,lon  
+        strokeColor: "#FF0000", // สี  
+        strokeOpacity: 1.0, // ความโปร่งใส  
+        strokeWeight: 2 //ความหน้าของเส้น  
+    	});   
+    	objPolylines[i].setMap(map);    // สร้างเส้น polylines ในแผนที่  
+    	} 
 	
     	}
     
     
-    
-    
-    
+
     // onError Callback receives a PositionError object
     //
     function onError(error) {
         alert('code: '    + error.code    + '\n' +
               'message: ' + error.message + '\n');
     }
-    
-    makePolyline=function(arr_path){   
-    var i=arr_path.length-1;  
-    objPolylines[i] = new GGM.Polyline({ // กำหนดรูปแบบของเส้น polylines  
-        path: arr_path,// array ตำแหน่งที่เก็บค่า lat,lon  
-        strokeColor: "#FF0000", // สี  
-        strokeOpacity: 1.0, // ความโปร่งใส  
-        strokeWeight: 2 //ความหน้าของเส้น  
-    });   
-    objPolylines[i].setMap(map);    // สร้างเส้น polylines ในแผนที่  
-    }  
+     
     
    
     // ----------------------Time Set--------------------------------------------------
@@ -157,7 +155,7 @@
     
     </script>
   </head>
-  <body onload="onDeviceReady()">
+  <body onload="onSuccess()">
     
     <div data-role="page" id="page">
 

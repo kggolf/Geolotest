@@ -28,23 +28,14 @@
 <!-- Java Script System -->
 <script type="text/javascript" charset="utf-8">
 
-    // Wait for Cordova to load
-    //
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-    var watchID = null;
-
-    // Cordova is ready
-    //
-    
-    function onDeviceReady() {
-        // Throw an error if no update is received every 30 seconds
-        var options = { timeout: 30000 };
-        watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
-    }
+	var options = { timeout: 30000 };
+        var watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+        
+	var arr_path=[]; // กำหนดตัวแปรสำหรับเก็บค่าอาเรย์ ตำแหน่ง path  
+	var makePolyline; // กำหนดตัวแปร ฟังก์ชั่น สร้างเส้น polylines  
+	var objPolylines=[]; // กำหนดตัวแปรสำหรับเก็บค่า object ของ polylines  
 
     // onSuccess Geolocation
-    //
     function onSuccess(position) {
                       
       mapSetup(position.coords.latitude,position.coords.longitude);
@@ -64,7 +55,18 @@
 	var marker = new google.maps.Marker({
       	position: firstLoc,
      	map: map,
+     	draggable:false,
  	});
+ 	
+ 	// กำหนด event ให้กับตัว marker เมื่อสิ้นสุดการลากตัว marker ให้ทำงานอะไร  
+    	google.maps.event.addListener(map, "bounds_changed", function() {  
+        var my_Point = marker.getPosition(firstLoc);  // หาตำแหน่งของตัว marker เมื่อกดลากแล้วปล่อย  
+        arr_path.push(my_Point); // เพิ่มค่าตำแหน่ง จากตัว marker ตำแหน่งล่าสุด  
+        map.panTo(my_Point);  // ให้แผนที่แสดงไปที่ตัว marke
+ 	makePolyline(arr_path);
+    	}); 
+    	
+    	
  
 	}
 	
@@ -81,10 +83,18 @@
               'message: ' + error.message + '\n');
     }
     
+    makePolyline=function(arr_path){   
+    var i=arr_path.length-1;  
+    objPolylines[i] = new GGM.Polyline({ // กำหนดรูปแบบของเส้น polylines  
+        path: arr_path,// array ตำแหน่งที่เก็บค่า lat,lon  
+        strokeColor: "#FF0000", // สี  
+        strokeOpacity: 1.0, // ความโปร่งใส  
+        strokeWeight: 2 //ความหน้าของเส้น  
+    });   
+    objPolylines[i].setMap(map);    // สร้างเส้น polylines ในแผนที่  
+    }  
     
-    
-    
-    
+   
     // ----------------------Time Set--------------------------------------------------
   	var ms = 0;
 		var state = 0;

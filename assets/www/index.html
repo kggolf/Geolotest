@@ -26,7 +26,7 @@ body {
 /* css กำหนดความกว้าง ความสูงของแผนที่ */  
 #map_canvas {   
     width:550px;  
-    height:400px;  
+    height:700px;  
     margin:auto;  
 /*  margin-top:100px;*/  
 }  
@@ -36,22 +36,17 @@ body {
 </head>  
   
 <body>  
+    Latitude    
+    <input name="lat_value" type="text" id="lat_value" value="0" />    
+    Longitude    
+    <input name="lon_value" type="text" id="lon_value" value="0" /> 
   <div id="map_canvas"></div>  
  <div id="showDD" style="margin:auto;padding-top:5px;width:550px;">    
   <form id="form_get_detailMap" name="form_get_detailMap" method="post" action="">    
   ข้อมูลสถานที่<br />  
   <textarea name="place_value" rows="2" id="place_value" style="width:380px;"></textarea>    
     <br />  
-    Latitude    
-    <input name="lat_value" type="text" id="lat_value" value="0" />    
-    Longitude    
-    <input name="lon_value" type="text" id="lon_value" value="0" />    
       
-  Zoom    
-  <input name="zoom_value" type="text" id="zoom_value" value="0" size="5" />    
-  <br />  
-  <br />  
-  <input type="submit" name="button" id="button" value="บันทึก" />    
   </form>    
 </div>   
     
@@ -105,8 +100,7 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
         });       
           
         $("#lat_value").val(my_Point.lat());  // เอาค่า latitude ตัว marker แสดงใน textbox id=lat_value  
-        $("#lon_value").val(my_Point.lng()); // เอาค่า longitude ตัว marker แสดงใน textbox id=lon_value   
-        $("#zoom_value").val(map.getZoom()); // เอาขนาด zoom ของแผนที่แสดงใน textbox id=zoom_value  
+        $("#lon_value").val(my_Point.lng()); // เอาค่า longitude ตัว marker แสดงใน textbox id=lon_value   e  
     });       
   
     // กำหนด event ให้กับตัวแผนที่ เมื่อมีการเปลี่ยนแปลงการ zoom  

@@ -38,10 +38,10 @@ body {
 <body>  
     Latitude    
     <!--<input name="lat_value" type="text" id="lat_value" value="0" />-->
-    <div id="lat_value" ><h8>0</h8></div>
+    <div ame="lat_value" id="lat_value" ><h8>0</h8></div>
     Longitude    
     <!--<input name="lon_value" type="text" id="lon_value" value="0" /> -->
-    <div id="lon_value" ><h8>0</h8></div>
+    <div name="lon_value" id="lon_value" ><h8>0</h8></div>
     
   <div id="map_canvas"></div>  
   
@@ -103,8 +103,8 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
           }  
         });       
         
-        document.all('#lat_value').innerHTML = my_Point.lat();
-        document.all('#lon_value').innerHTML = my_Point.lng();
+        document.all('#lat_value').innerHTML = val(my_Point.lat());
+        document.all('#lon_value').innerHTML = val(my_Point.lng());
         //$("#lat_value").val(my_Point.lat());  // เอาค่า latitude ตัว marker แสดงใน textbox id=lat_value  
         //$("#lon_value").val(my_Point.lng()); // เอาค่า longitude ตัว marker แสดงใน textbox id=lon_value   e  
     });       

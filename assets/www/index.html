@@ -59,18 +59,16 @@ Longitude :
 <script src="http://code.jquery.com/jquery-latest.js"></script> 
 <script type="text/javascript">  
  
- document.addEventListener("deviceready", onDeviceReady, false);
-
-    function onDeviceReady() {
-        navigator.geolocation.getCurrentPosition(initialize, onError);
- }
- 
+    var options = { timeout: 300000 };
+    var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
+    
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
 var geocoder; // กำหนดตัวแปร สำหรับใช้งานข้อมูลสถานที่จาก Google Map  
 function initialize(position) { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
     // กำหนดจุดเริ่มต้นของแผนที่  
+ 
     var my_Latlng  = new GGM.LatLng(position.coords.latitude,position.coords.longitude);  
       
     // เรียกใช้งานข้อมูล Geocoder ของ Google Map  

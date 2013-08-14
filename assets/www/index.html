@@ -102,9 +102,11 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
             alert("Geocoder failed due to: " + status);  
           }  
         });       
-          
-        $("#lat_value").val(my_Point.lat());  // เอาค่า latitude ตัว marker แสดงใน textbox id=lat_value  
-        $("#lon_value").val(my_Point.lng()); // เอาค่า longitude ตัว marker แสดงใน textbox id=lon_value   e  
+        
+        document.all('#lat_value').innerHTML = my_Point.lat();
+        document.all('#lon_value').innerHTML = my_Point.lng();
+        //$("#lat_value").val(my_Point.lat());  // เอาค่า latitude ตัว marker แสดงใน textbox id=lat_value  
+        //$("#lon_value").val(my_Point.lng()); // เอาค่า longitude ตัว marker แสดงใน textbox id=lon_value   e  
     });       
   
     // กำหนด event ให้กับตัวแผนที่ เมื่อมีการเปลี่ยนแปลงการ zoom  

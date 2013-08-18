@@ -176,6 +176,7 @@ function startDrawing(poly,color){
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
     } 
+   
     
     listener=GGM.event.addListener(map, "click", function(event){ 
         var path = poly.getPath();  
@@ -189,14 +190,14 @@ function startDrawing(poly,color){
         $("#distance").val(poly.inKm());  
   
         // Add a new marker at the new plotted point on the polyline.  
-        var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
-        marker[i] = new GGM.Marker({  
-          position: event.latLng,  
-          title: '#' + path.getLength(),  
-          map: map,  
-          icon: image  
-        });    
-        i++;  
+ //       var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
+ //       marker[i] = new GGM.Marker({  
+ //         position: event.latLng,  
+ //         title: '#' + path.getLength(),  
+ //         map: map,  
+ //         icon: image  
+ //       });    
+ //       i++;  
     });           
 }  
   

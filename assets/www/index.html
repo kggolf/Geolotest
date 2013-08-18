@@ -67,10 +67,8 @@ body {
   <div id="showDD">  
     <table>  
       <tr>  
-        <td><div id="hand_b"  
-     onclick="stopEditing()"/></td>  
-        <td><div id="line_b"  
-     onclick="startLine()"/></td>  
+        <td><div id="hand_b" onclick="stopEditing()"/></td>  
+        <td><div id="line_b" onclick="startLine()"/></td>  
       </tr>  
     </table>  
   </div>  
@@ -79,7 +77,7 @@ body {
   <form id="form_get_detailMap" name="form_get_detailMap" method="post" action="">  
     Distance<br />  
     <input name="distance" type="text" id="distance" value="" />  
-    Km&nbsp; (หากเป็น poligon จะเป็นขนาดความยาวโดยรอบ)<br />
+    Km&nbsp;<br />
     <input type="submit" name="button" id="button" value="บันทึก" />  
   </form>  
 </div>  
@@ -152,7 +150,6 @@ function getIcon(color) {
   return icon;  
 }  
      
-  
 function startLine() {  
   swap_class("line_b");  
     var color = getColor(true);  
@@ -167,99 +164,8 @@ function startLine() {
       
     startDrawing(poly,color);  
   
-}  
-function startDrawing2(polygon,color){  
-        var i=0;  
-        Points=[];  
-        if(listener!=undefined){  
-            GGM.event.removeListener(listener);  
-        }             
-        listener=GGM.event.addListener(map, 'click', function(event){  
-  
-            var path = polygon.getPath();  
-  
-            path.push(event.latLng);  
-            Points.push(event.latLng);  
-              
-  
-            var data_path="";  
-            var points='';  
-            $.each(path.b,function(j,k){  
-                data_path+=path.b[j].ra+","+path.b[j].sa+"\r\n";  
-                points+=path.b[j].ra+","+path.b[j].sa+'|';  
-            });  
-  
-            $("#path_arr").val(data_path);  
-            $("#distance").val(polygon.inKm());  
-            calculateArea(Points);  
-           
-            // Add a new marker at the new plotted point on the polyline.  
-            var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
-            marker[i] = new GGM.Marker({  
-              position: event.latLng,  
-              title: '#' + path.getLength(),  
-              map: map,  
-              icon: image  
-            });    
-            i++;  
-        });           
-}  
-  
-function calculateArea(points) {  
-    if(points.length>2) {  
-        var areaMeters2=PlanarPolygonAreaMeters2(points);  
-        if(areaMeters2>1000000.0) areaMeters2=SphericalPolygonAreaMeters2(points);  
-        $("#area_data").val(areaMeters2.toFixed(2));  
-    }  
-}  
-function PlanarPolygonAreaMeters2(points) {  
-    var a=0.0;  
-    for(var i=0;i<points.length;++i)  
-        {var j=(i+1)%points.length;  
-        var xi=points[i].lng()*metersPerDegree*Math.cos(points[i].lat()*radiansPerDegree);  
-        var yi=points[i].lat()*metersPerDegree;  
-        var xj=points[j].lng()*metersPerDegree*Math.cos(points[j].lat()*radiansPerDegree);  
-        var yj=points[j].lat()*metersPerDegree;  
-        a+=xi*yj-xj*yi;}  
-    return Math.abs(a/2.0);  
-}  
-function SphericalPolygonAreaMeters2(points) {  
-    var totalAngle=0.0;  
-    //alert(points[0]);  
-    for(i=0;i<points.length;++i)  
-        {var j=(i+1)%points.length;  
-        var k=(i+2)%points.length;  
-        totalAngle+=Angle(points[i],points[j],points[k]);}  
-    var planarTotalAngle=(points.length-2)*180.0;  
-    var sphericalExcess=totalAngle-planarTotalAngle;  
-    if(sphericalExcess>420.0)  
-        {totalAngle=points.length*360.0-totalAngle;  
-        sphericalExcess=totalAngle-planarTotalAngle;}  
-    else if(sphericalExcess>300.0&&sphericalExcess<420.0)  
-        {sphericalExcess=Math.abs(360.0-sphericalExcess);}  
-    return sphericalExcess*radiansPerDegree*earthRadiusMeters*earthRadiusMeters;  
-}  
-function Angle(p1,p2,p3) {  
-    var bearing21=Bearing(p2,p1);  
-    var bearing23=Bearing(p2,p3);  
-    var angle=bearing21-bearing23;  
-    if(angle<0.0) angle+=360.0;  
-    return angle;  
-}  
-function Bearing(from,to) {  
-    var lat1=from.lat()*radiansPerDegree;  
-    var lon1=from.lng()*radiansPerDegree;  
-    var lat2=to.lat()*radiansPerDegree;  
-    var lon2=to.lng()*radiansPerDegree;  
-    var angle=-Math.atan2(Math.sin(lon1-lon2)*Math.cos(lat2),Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon1-lon2));  
-    if(angle<0.0) angle+=Math.PI*2.0;  
-    angle=angle*degreesPerRadian;  
-    return angle;  
-}  
-   
-  
-  
-  
+}     
+ 
 function startDrawing(poly,color){  
     var i=0;  
     if(listener!=undefined){  
@@ -288,28 +194,7 @@ function startDrawing(poly,color){
         i++;  
     });           
 }  
-  
-  
-function placeMarker() {  
-    swap_class("placemark_b");  
-    var i=0;  
-    if(listener!=undefined){  
-        GGM.event.removeListener(listener);  
-    }         
-    listener=GGM.event.addListener(map, 'click', function(event){  
-        if(event.latLng){  
-            var color = getColor(true);  
-            var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
-            marker[i] = new GGM.Marker({  
-                position: event.latLng,  
-                map: map,  
-                icon: image  
-            });  
-            i++;  
-        }  
-    });  
-  
-}  
+   
    
 function initialize() { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
@@ -343,15 +228,6 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
     return dist;   
   }  
     
-  GGM.Polygon.prototype.inKm = function(n){   
-    var a = this.getPath(n), len = a.getLength(), dist = 0;   
-    var dist2=0;  
-    for(var i=0; i<len-1; i++){   
-      dist += a.getAt(i).kmTo(a.getAt(i+1));   
-    }   
-    dist2+=a.getAt(len-1).kmTo(a.getAt(0));   
-    return dist+dist2;   
-  }    
     
 }  
 $(function(){  

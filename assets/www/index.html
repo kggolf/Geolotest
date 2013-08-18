@@ -92,7 +92,10 @@ body {
 </div>  
   
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>   
-<script type="text/javascript">  
+<script type="text/javascript">
+
+var options = { timeout: 30000 };
+var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
   
 /* ส่วนสำหรับการ random ค่าสีและ event */  
 var COLORS =[  

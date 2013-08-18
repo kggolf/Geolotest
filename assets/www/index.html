@@ -3,16 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">  
 <head>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>RunforHealth</title>
-
-   <!-- <script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    
-	<link href="bootstrap.css" rel="stylesheet">
-	<script src="bootstrap.js"></script>-->
-	
+<title>Google Map API 3 - 01</title>  
 <style type="text/css">  
 html {  
     height: 100%  
@@ -53,19 +44,19 @@ body {
     width:31px;  
     height:31px;  
     cursor:pointer;  
-    background-color:blue;  
+    background-image: url(images/Bsu.png);  
 }  
 #hand_b.selected {  
-    background-color:red;  
+    background-image: url(images/Bsd.png);  
 }   
 #line_b {  
     width:31px;  
     height:31px;  
     cursor:pointer;  
-    background-color:blue; 
+    background-image: url(images/Blu.png);  
 }  
 #line_b.selected {  
-    background-color:red;
+    background-image: url(images/Bld.png);  
 }   
 </style>  
 </head>  
@@ -73,21 +64,23 @@ body {
 <body>  
 <div id="contain_map">  
   <div id="map_canvas"></div>  
-</div>
-<div id="showDD">  
+  <div id="showDD">  
     <table>  
       <tr>  
-        <td><div id="hand_b" onclick="stopEditing()"/></td>  
-        <td><div id="line_b" onclick="startLine()"/></td>  
+        <td><div id="hand_b"  
+     onclick="stopEditing()"/></td>  
+        <td><div id="line_b"  
+     onclick="startLine()"/></td>  
       </tr>  
     </table>  
-  </div> 
+  </div>  
+</div>  
 <div id="show_form_data">  
   <form id="form_get_detailMap" name="form_get_detailMap" method="post" action="">  
     Distance<br />  
     <input name="distance" type="text" id="distance" value="" />  
     Km&nbsp;<br />
-    <!--<input type="submit" name="button" id="button" value="บันทึก" />  -->
+    <input type="submit" name="button" id="button" value="บันทึก" />  
   </form>  
 </div>  
   
@@ -110,10 +103,8 @@ var earthRadiusMeters=6367460.0;
 var metersPerDegree=2.0*Math.PI*earthRadiusMeters/360.0;  
 var degreesPerRadian=180.0/Math.PI;  
 var radiansPerDegree=Math.PI/180.0;  
-var metersPerKm=1000.0;
-
-var options = { timeout: 30000 };
-var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
+var metersPerKm=1000.0;  
+   
    
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
@@ -138,7 +129,7 @@ function stopEditing() {
     }  
     if(poly!=undefined){  
         poly.setMap(null);  
-    }  
+    }     
     if(marker.length>0){  
         for(i=0;i<marker.length;i++){  
             marker[i].setMap(null);  
@@ -158,6 +149,7 @@ function getIcon(color) {
   return icon;  
 }  
      
+  
 function startLine() {  
   swap_class("line_b");  
     var color = getColor(true);  
@@ -172,8 +164,44 @@ function startLine() {
       
     startDrawing(poly,color);  
   
-}     
- 
+}  
+function startDrawing2(polygon,color){  
+        var i=0;  
+        Points=[];  
+        if(listener!=undefined){  
+            GGM.event.removeListener(listener);  
+        }             
+        listener=GGM.event.addListener(map, 'click', function(event){  
+  
+            var path = polygon.getPath();  
+  
+            path.push(event.latLng);  
+            Points.push(event.latLng);  
+              
+  
+            var data_path="";  
+            var points='';  
+            $.each(path.b,function(j,k){  
+                data_path+=path.b[j].ra+","+path.b[j].sa+"\r\n";  
+                points+=path.b[j].ra+","+path.b[j].sa+'|';  
+            });  
+  
+            $("#path_arr").val(data_path);  
+            $("#distance").val(polygon.inKm());  
+            calculateArea(Points);  
+           
+            // Add a new marker at the new plotted point on the polyline.  
+            var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
+            marker[i] = new GGM.Marker({  
+              position: event.latLng,  
+              title: '#' + path.getLength(),  
+              map: map,  
+              icon: image  
+            });    
+            i++;  
+        });           
+}  
+  
 function startDrawing(poly,color){  
     var i=0;  
     if(listener!=undefined){  
@@ -202,7 +230,7 @@ function startDrawing(poly,color){
         i++;  
     });           
 }  
-   
+  
    
 function initialize() { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
@@ -235,7 +263,7 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
     }   
     return dist;   
   }  
-    
+      
     
 }  
 $(function(){  

@@ -48,16 +48,7 @@ body {
 }  
 #hand_b.selected {  
     background-image: url(images/Bsd.png);  
-}  
-#placemark_b {  
-    width:31px;  
-    height:31px;  
-    cursor:pointer;  
-    background-image: url(images/Bmu.png);  
-}  
-#placemark_b.selected {  
-    background-image: url(images/Bmd.png);  
-}  
+}   
 #line_b {  
     width:31px;  
     height:31px;  
@@ -66,16 +57,7 @@ body {
 }  
 #line_b.selected {  
     background-image: url(images/Bld.png);  
-}  
-#shape_b {  
-    width:31px;  
-    height:31px;  
-    cursor:pointer;  
-    background-image: url(images/Bpu.png);  
-}  
-#shape_b.selected {  
-    background-image: url(images/Bpd.png);  
-}  
+}   
 </style>  
 </head>  
   
@@ -87,27 +69,17 @@ body {
       <tr>  
         <td><div id="hand_b"  
      onclick="stopEditing()"/></td>  
-        <td><div id="placemark_b"  
-     onclick="placeMarker()"/></td>  
         <td><div id="line_b"  
      onclick="startLine()"/></td>  
-        <td><div id="shape_b"  
-    onclick="startShape()"/></td>  
       </tr>  
     </table>  
   </div>  
 </div>  
 <div id="show_form_data">  
   <form id="form_get_detailMap" name="form_get_detailMap" method="post" action="">  
-    Path Array<br />  
-    <textarea name="path_arr" id="path_arr" cols="70" rows="5"></textarea>  
-    <br />  
     Distance<br />  
     <input name="distance" type="text" id="distance" value="" />  
-    Km&nbsp; (หากเป็น poligon จะเป็นขนาดความยาวโดยรอบ)<br />  
-    Area<br />  
-    <input name="area_data" type="text" id="area_data" value="" />  
-    m<sup>2</sup> (หาร 1000000 จะได้ เท่ากับหน่วย km<sup>2</sup>)<br />  
+    Km&nbsp; (หากเป็น poligon จะเป็นขนาดความยาวโดยรอบ)<br />
     <input type="submit" name="button" id="button" value="บันทึก" />  
   </form>  
 </div>  
@@ -142,10 +114,8 @@ var marker=[];
 var Points=[];  
   
 function swap_class(buttonId) {  
-    $("#hand_b").removeClass("selected");  
-    $("#shape_b").removeClass("selected");  
-    $("#line_b").removeClass("selected");  
-    $("#placemark_b").removeClass("selected");  
+    $("#hand_b").removeClass("selected");    
+    $("#line_b").removeClass("selected");   
     $("#"+buttonId).addClass("selected");  
 }  
   
@@ -181,25 +151,7 @@ function getIcon(color) {
   icon.iconAnchor = new GPoint(15, 32);  
   return icon;  
 }  
-   
-  
-function startShape(){  
-    swap_class("shape_b");    
-    var color = getColor(true);  
-    var polygonOptions = {  
-      strokeColor: color,  
-      geodesic:true,  
-      strokeOpacity: 1.0,  
-      strokeWeight: 3,  
-      fillColor: color,  
-      fillOpacity: 0.35     
-    }  
-    polygon = new GGM.Polygon(polygonOptions);  
-    polygon.setMap(map);  
-      
-    startDrawing2(polygon,color);  
-      
-}  
+     
   
 function startLine() {  
   swap_class("line_b");  

@@ -242,10 +242,10 @@ function startDrawing(poly,color){
 }  
   
    
-function initialize() { // ฟังก์ชันแสดงแผนที่  
+function initialize(position) { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
     // กำหนดจุดเริ่มต้นของแผนที่  
-    var my_Latlng  = new GGM.LatLng(13.761728449950002,100.6527900695800);  
+    var my_Latlng  = new GGM.LatLng(position.coords.latitude,position.coords.longitude);  
     var my_mapTypeId=GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง  
     // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas  
     var my_DivObj=$("#map_canvas")[0];   
@@ -276,6 +276,12 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
       
     
 }  
+
+function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
+    
 $(function(){  
     // โหลด สคริป google map api เมื่อเว็บโหลดเรียบร้อยแล้ว  
     // ค่าตัวแปร ที่ส่งไปในไฟล์ google map api  

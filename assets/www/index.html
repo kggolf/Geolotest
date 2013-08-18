@@ -60,10 +60,10 @@ body {
     width:31px;
     height:31px;
     cursor:pointer;
-    background-color:blue;
+    background-color:red;
 }  
 #line_b.selected {  
-    background-color:red;
+    background-color:blue;
 }   
 </style>  
 </head>  
@@ -170,49 +170,14 @@ function startLine() {
     startDrawing(poly,color);  
   
 }  
-function startDrawing2(polygon,color){  
-        var i=0;  
-        Points=[];  
-        if(listener!=undefined){  
-            GGM.event.removeListener(listener);  
-        }             
-        listener=GGM.event.addListener(map, 'click', function(event){  
-  
-            var path = polygon.getPath();  
-  
-            path.push(event.latLng);  
-            Points.push(event.latLng);  
-              
-  
-            var data_path="";  
-            var points='';  
-            $.each(path.b,function(j,k){  
-                data_path+=path.b[j].ra+","+path.b[j].sa+"\r\n";  
-                points+=path.b[j].ra+","+path.b[j].sa+'|';  
-            });  
-  
-            $("#path_arr").val(data_path);  
-            $("#distance").val(polygon.inKm());  
-            calculateArea(Points);  
-           
-            // Add a new marker at the new plotted point on the polyline.  
-            var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
-            marker[i] = new GGM.Marker({  
-              position: event.latLng,  
-              title: '#' + path.getLength(),  
-              map: map,  
-              icon: image  
-            });    
-            i++;  
-        });           
-}  
   
 function startDrawing(poly,color){  
     var i=0;  
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
-    }         
-    listener=GGM.event.addListener(map, 'click', function(event){  
+    } 
+    
+    listener=GGM.event.addListener(map, "bounds_changed", function(event){  
         var path = poly.getPath();  
   
         path.push(event.latLng);  

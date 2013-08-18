@@ -48,22 +48,22 @@ body {
     width:550px;  
 }  
 #hand_b {  
-    width:31px;  
-    height:31px;  
-    cursor:pointer;  
-    background-image: url(images/Bsu.png);  
+    width:31px;
+    height:31px;
+    cursor:pointer;
+    background-color:red;
 }  
 #hand_b.selected {  
-    background-image: url(images/Bsd.png);  
+    background-color:blue;
 }   
 #line_b {  
-    width:31px;  
-    height:31px;  
-    cursor:pointer;  
-    background-image: url(images/Blu.png);  
+    width:31px;
+    height:31px;
+    cursor:pointer;
+    background-color:blue;
 }  
 #line_b.selected {  
-    background-image: url(images/Bld.png);  
+    background-color:red;
 }   
 </style>  
 </head>  
@@ -74,10 +74,8 @@ body {
   <div id="showDD">  
     <table>  
       <tr>  
-        <td><div id="hand_b"  
-     onclick="stopEditing()"/></td>  
-        <td><div id="line_b"  
-     onclick="startLine()"/></td>  
+        <td><div id="hand_b" onclick="stopEditing()"/></td>  
+        <td><div id="line_b" onclick="startLine()"/></td>  
       </tr>  
     </table>  
   </div>  
@@ -119,7 +117,6 @@ var metersPerKm=1000.0;
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
 var poly;  
-var polygon;  
 var marker=[];  
 var Points=[];  
   
@@ -131,9 +128,7 @@ function swap_class(buttonId) {
   
 function stopEditing() {  
     swap_class("hand_b");  
-    $("#path_arr").val("");  
     $("#distance").val("");  
-    $("#area_data").val("");  
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
     }  

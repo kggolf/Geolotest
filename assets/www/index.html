@@ -3,7 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">  
 <head>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-<title>Google Map API 3 - 01</title>  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RunforHealth</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    
+	<link href="bootstrap.css" rel="stylesheet">
+	<script src="bootstrap.js"></script>
+	
 <style type="text/css">  
 html {  
     height: 100%  
@@ -78,7 +87,7 @@ body {
     Distance<br />  
     <input name="distance" type="text" id="distance" value="" />  
     Km&nbsp;<br />
-    <input type="submit" name="button" id="button" value="บันทึก" />  
+    <!--<input type="submit" name="button" id="button" value="บันทึก" />  -->
   </form>  
 </div>  
   
@@ -101,8 +110,10 @@ var earthRadiusMeters=6367460.0;
 var metersPerDegree=2.0*Math.PI*earthRadiusMeters/360.0;  
 var degreesPerRadian=180.0/Math.PI;  
 var radiansPerDegree=Math.PI/180.0;  
-var metersPerKm=1000.0;  
-   
+var metersPerKm=1000.0;
+
+var options = { timeout: 30000 };
+var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
    
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  

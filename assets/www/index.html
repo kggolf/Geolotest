@@ -85,7 +85,6 @@ body {
     Distance<br />  
     <input name="distance" type="text" id="distance" value="" />  
     Km&nbsp;<br />
-    <input type="submit" name="button" id="button" value="บันทึก" />  
   </form>  
 </div>  
   
@@ -117,8 +116,10 @@ var metersPerKm=1000.0;
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
 var poly;  
+var my_Latlng;
 var marker=[];  
-var Points=[];  
+var Points=[];
+var arr_path=[];
   
 function swap_class(buttonId) {  
     $("#hand_b").removeClass("selected");    
@@ -155,7 +156,7 @@ function getIcon(color) {
 }  
      
   
-function startLine() {  
+function startLine(position) {  
   swap_class("line_b");  
     var color = getColor(true);  
     var polyOptions = {  
@@ -167,19 +168,23 @@ function startLine() {
     poly = new GGM.Polyline(polyOptions);  
     poly.setMap(map);  
       
-    startDrawing(poly,color);  
+    startDrawing(poly,color,position);  
   
 }  
   
-function startDrawing(poly,color){  
+function startDrawing(poly,color,position){  
     var i=0;  
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
     } 
    
     
-    listener=GGM.event.addListener(map, "click", function(event){ 
-       // var path = poly.getPath();  
+    listener=GGM.event.addListener(map, "bounds_changed", function(event){ 
+        var my_Point = my_Marker.getPosition(my_Latlng);
+        arr_path.push(my_Point);
+        map.panTo(my_Point);
+        
+        var path = poly.getPath();  
   
         path.push(event.latLng);  
           
@@ -196,7 +201,7 @@ function startDrawing(poly,color){
 function initialize(position) { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
     // กำหนดจุดเริ่มต้นของแผนที่  
-    var my_Latlng  = new GGM.LatLng(position.coords.latitude,position.coords.longitude);  
+    my_Latlng  = new GGM.LatLng(position.coords.latitude,position.coords.longitude);  
     var my_mapTypeId=GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง  
     // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas  
     var my_DivObj=$("#map_canvas")[0];   

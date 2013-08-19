@@ -116,10 +116,8 @@ var metersPerKm=1000.0;
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
 var poly;  
-var my_Latlng;
 var marker=[];  
 var Points=[];
-var arr_path=[];
   
 function swap_class(buttonId) {  
     $("#hand_b").removeClass("selected");    
@@ -168,11 +166,11 @@ function startLine(position) {
     poly = new GGM.Polyline(polyOptions);  
     poly.setMap(map);  
       
-    startDrawing(poly,color,position);  
+    startDrawing(poly,color);  
   
 }  
   
-function startDrawing(poly,color,position){  
+function startDrawing(poly,color){  
     var i=0;  
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
@@ -180,9 +178,6 @@ function startDrawing(poly,color,position){
    
     
     listener=GGM.event.addListener(map, "bounds_changed", function(event){ 
-        var my_Point = my_Marker.getPosition(my_Latlng);
-        arr_path.push(my_Point);
-        map.panTo(my_Point);
         
         var path = poly.getPath();  
   

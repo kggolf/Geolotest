@@ -91,6 +91,9 @@ body {
   
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>   
 <script type="text/javascript">  
+
+var options = { timeout: 30000 };
+var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
   
 /* ส่วนสำหรับการ random ค่าสีและ event */  
 var COLORS =[  
@@ -228,7 +231,7 @@ function startDrawing(poly,color){
 function initialize() { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
     // กำหนดจุดเริ่มต้นของแผนที่  
-    var my_Latlng  = new GGM.LatLng(13.761728449950002,100.6527900695800);  
+    var my_Latlng  = new GGM.LatLng(position.coords.latitude,position.coords.longitude);   
     var my_mapTypeId=GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง  
     // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas  
     var my_DivObj=$("#map_canvas")[0];   

@@ -1,11 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"   
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
-<html xmlns="http://www.w3.org/1999/xhtml">  
+<html>  
 <head>  
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-<title>Google Map API 3 - 01</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<title>Tell Me</title>
 
- <script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script>
+ <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     
  <link href="bootstrap.css" rel="stylesheet">
@@ -25,14 +24,14 @@ body {
 /* css กำหนดความกว้าง ความสูงของแผนที่ */  
 #map_canvas {  
     position:relative;  
-    width:550px;  
-    height:400px;  
+    width:255px;  
+    height:280px;  
     margin:auto;/*  margin-top:100px;*/  
 }  
 #contain_map {  
     position:relative;  
-    width:550px;  
-    height:400px;  
+    width:255px;  
+    height:280px; 
     margin:auto;  
     margin-top:50px;  
 }  
@@ -45,10 +44,10 @@ body {
 }  
 #show_form_data {  
     margin:auto;  
-    width:550px;  
+    width:255px;  
 }  
 #hand_b {  
-    width:31px;
+    width:40px;
     height:31px;
     cursor:pointer;
     background-color:red;
@@ -57,7 +56,7 @@ body {
     background-color:blue;
 }   
 #line_b {  
-    width:31px;
+    width:40px;
     height:31px;
     cursor:pointer;
     background-color:red;
@@ -74,8 +73,8 @@ body {
   <div id="showDD">  
     <table>  
       <tr>  
-        <td><div id="hand_b" onclick="stopEditing()"/></td>  
-        <td><div id="line_b" onclick="startLine()"/></td>  
+        <td><div id="hand_b" onclick="stopEditing()"/>Clear</td>  
+        <td><div id="line_b" onclick="startLine()"/>Start</td>  
       </tr>  
     </table>  
   </div>  
@@ -154,7 +153,7 @@ function getIcon(color) {
 }  
      
   
-function startLine(position) {  
+function startLine() {  
   swap_class("line_b");  
     var color = getColor(true);  
     var polyOptions = {  
@@ -174,11 +173,8 @@ function startDrawing(poly,color){
     var i=0;  
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
-    } 
-   
-    
-    listener=GGM.event.addListener(map, "bounds_changed", function(event){ 
-        
+    }         
+    listener=GGM.event.addListener(map, 'touch', function(event){  
         var path = poly.getPath();  
   
         path.push(event.latLng);  
@@ -186,9 +182,18 @@ function startDrawing(poly,color){
         var data_path="";  
         $.each(path.b,function(j,k){  
             data_path+=path.b[j].ra+","+path.b[j].sa+"\r\n";  
-        }); 
+        });  
         $("#distance").val(poly.inKm());  
   
+        // Add a new marker at the new plotted point on the polyline.  
+        var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
+        marker[i] = new GGM.Marker({  
+          position: event.latLng,  
+          title: '#' + path.getLength(),  
+          map: map,  
+          icon: image  
+        });    
+        i++;  
     });           
 }  
   
@@ -202,18 +207,11 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
     var my_DivObj=$("#map_canvas")[0];   
     // กำหนด Option ของแผนที่  
     var myOptions = {  
-        zoom: 15, // กำหนดขนาดการ zoom  
+        zoom: 14, // กำหนดขนาดการ zoom  
         center: my_Latlng , // กำหนดจุดกึ่งกลาง  
         mapTypeId:my_mapTypeId // กำหนดรูปแบบแผนที่  
     };  
     map = new GGM.Map(my_DivObj,myOptions);// สร้างแผนที่และเก็บตัวแปรไว้ในชื่อ map  
-  
-    var my_Marker = new GGM.Marker({ // สร้างตัว marker  
-        position: my_Latlng,  // กำหนดไว้ที่เดียวกับจุดกึ่งกลาง  
-        map: map, // กำหนดว่า marker นี้ใช้กับแผนที่ชื่อ instance ว่า map  
-        draggable:false, // กำหนดให้สามารถลากตัว marker นี้ได้  
-        title:"คลิกลากเพื่อหาตำแหน่งจุดที่ต้องการ!" // แสดง title เมื่อเอาเมาส์มาอยู่เหนือ  
-    }); 
     
   GGM.LatLng.prototype.kmTo = function(a){   
     var e = Math, ra = e.PI/180;   

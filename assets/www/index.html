@@ -19,7 +19,7 @@ body {
     margin:0;  
     padding:0;  
     font-family:tahoma, "Microsoft Sans Serif", sans-serif, Verdana;  
-    font-size:12px;  
+    font-size:26px;  
 }  
 /* css กำหนดความกว้าง ความสูงของแผนที่ */  
 #map_canvas {  
@@ -47,7 +47,7 @@ body {
     width:550px;  
 }  
 #hand_b {  
-    width:40px;  
+    width:55px;  
     height:31px;  
     cursor:pointer;  
     background-color:red;  
@@ -57,7 +57,7 @@ body {
 }  
 
 #line_b {  
-    width:40px;  
+    width:55px;  
     height:31px;  
     cursor:pointer;  
     background-color:red;  
@@ -69,23 +69,27 @@ body {
 </head>  
   
 <body>  
+<div class="navbar navbar-inverse navbar-static-top">
+		<div class="navbar-inner">
+			  <a class="brand" href="#" style="float:center"><center><h1>Tell Me</h1></center></a>
+		</div>
+	</div
 <div id="contain_map">  
-  <div id="map_canvas"></div>  
+  <div id="map_canvas"></div>
   <div id="showDD">  
     <table>  
       <tr>  
-        <!--<td><div id="hand_b" onclick="stopEditing()"/>Clear</td>  -->
-  <td><button type="button" id="hand_b" onclick="stopEditing()" class="btn btn-large btn-success" style="width:45px;height:31px;">Clear</button></td> 
-  <td><button type="button" id="line_b" onclick="startLine()" class="btn btn-large btn-primary" style="width:45px;height:31px;">Reset</button></td> 
-        <!--<td><div id="line_b" onclick="startLine()"/>Start</td>  -->
+  <td><button type="button" id="hand_b" onclick="stopEditing()" class="btn btn-large btn-success" >Clear</button></td> 
+  <td><button type="button" id="line_b" onclick="startLine()" class="btn btn-large btn-primary" >Draw path</button></td> 
       </tr>  
     </table>  
   </div>  
 </div>  
+<br>
 <div id="show_form_data">  
   <form id="form_get_detailMap" name="form_get_detailMap" method="post" action="">  
     Distance<br/>  
-    <input name="distance" type="text" id="distance" value="" />  
+    <input name="distance" type="text" id="distance" value="0" />  
     Km&nbsp;<br/>  
   </form>  
 </div>  
@@ -163,25 +167,7 @@ function getIcon(color) {
   icon.iconAnchor = new GPoint(15, 32);  
   return icon;  
 }  
-   
   
-function startShape(){  
-    swap_class("shape_b");    
-    var color = getColor(true);  
-    var polygonOptions = {  
-      strokeColor: color,  
-      geodesic:true,  
-      strokeOpacity: 1.0,  
-      strokeWeight: 3,  
-      fillColor: color,  
-      fillOpacity: 0.35     
-    }  
-    polygon = new GGM.Polygon(polygonOptions);  
-    polygon.setMap(map);  
-      
-    startDrawing2(polygon,color);  
-      
-}  
   
 function startLine() {  
   swap_class("line_b");  

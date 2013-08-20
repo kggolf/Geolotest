@@ -118,7 +118,8 @@ var metersPerKm=1000.0;
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
 var poly;  
-var polygon;  
+var polygon;
+var my_Latlng;
 var marker=[];  
 var Points=[];  
   
@@ -232,7 +233,7 @@ function startDrawing(poly,color){
 function initialize(position) { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
     // กำหนดจุดเริ่มต้นของแผนที่  
-    var my_Latlng  = new GGM.LatLng(position.coords.latitude,position.coords.longitude);   
+    my_Latlng  = new GGM.LatLng(position.coords.latitude,position.coords.longitude);   
     var my_mapTypeId=GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง  
     // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas  
     var my_DivObj=$("#map_canvas")[0];   
@@ -272,6 +273,12 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
   }    
     
 }  
+
+function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
+    
 $(function(){  
     // โหลด สคริป google map api เมื่อเว็บโหลดเรียบร้อยแล้ว  
     // ค่าตัวแปร ที่ส่งไปในไฟล์ google map api  

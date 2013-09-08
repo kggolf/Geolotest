@@ -191,7 +191,7 @@ function startDrawing(poly,color){
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
     }         
-    listener=GGM.event.addListener(map, 'click', function(event){  
+    listener=GGM.event.addListener(map, "bounds_changed", function(event){  
         var path = poly.getPath();  
   
         path.push(event.latLng);  

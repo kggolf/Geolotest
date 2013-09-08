@@ -125,7 +125,8 @@ var poly;
 var polygon;
 var my_Latlng;
 var marker=[];  
-var Points=[];  
+var Points=[];
+var arr_path=[];
   
 function swap_class(buttonId) {  
     $("#hand_b").removeClass("selected");  
@@ -169,18 +170,20 @@ function getIcon(color) {
 }  
   
   
-function startLine() {  
+function startLine(arr_path) {  
   swap_class("line_b");  
-    var color = getColor(true);  
+    var color = getColor(true);
+    
     var polyOptions = {  
       strokeColor: color,  
       geodesic:true,  
       strokeOpacity: 1.0,  
-      strokeWeight: 3  
+      strokeWeight: 3
+      path: arr_path
     }  
-    poly = new GGM.Polyline(polyOptions);  
-    poly.setMap(map);  
-      
+    poly[i] = new GGM.Polyline(polyOptions);  
+    poly[i].setMap(map);
+    
     startDrawing(poly,color);  
   
 }  
@@ -197,6 +200,7 @@ function startDrawing(poly,color){
   	
         path.push(my_Point);
         map.panTo(my_Point);
+        startLine(arr_path);
           
         var data_path="";  
         $.each(path.b,function(j,k){  
@@ -244,7 +248,7 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
   }   
   
   GGM.Polyline.prototype.inKm = function(n){   
-    var a = this.getPath(n), len = a.getLength(), dist = 0;   
+    var a = this.getPosition(n), len = a.getLength(), dist = 0;   
     for(var i=0; i<len-1; i++){   
       dist += a.getAt(i).kmTo(a.getAt(i+1));   
     }   

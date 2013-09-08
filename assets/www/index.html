@@ -1,31 +1,150 @@
+<!DOCTYPE HTML> 
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="./js/jquery-latest.js"></script>
-		<link rel="stylesheet" href="./css/jquery.mobile-1.3.2.min.css" />
-		<link href="./css/bootstrap.css" rel="stylesheet">
-		<link href="./css/bootstrap-responsive.css" rel="stylesheet">	
-		<script src="./js/jquery-1.9.1.min.js"></script>
-		<script src="./js/jquery.mobile-1.3.2.min.js"></script>
-		
-</head>
-	<body style="overflow:hidden" onload="onDeviceReady()">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
-		<div data-role="page" id="running">
-					<div data-role="header">
-						<h1>Exercise Healthy</h1>
-					</div>
-						<!-- <script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script> -->
-						<script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script>
-						<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-					
-						<style type="text/css">
-							html {height:100%}
-							body {height:100%; margin:0; padding:0}
-							#map_canvas {height:100%; width:100%}
-						</style>
-						   
+<title>RunforHealth</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    
+    
+	
+	<link href="bootstrap.css" rel="stylesheet">
+	<script src="bootstrap.js"></script>
+
+	
+<!-- CSS Style Sheet
+<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
+<link rel="stylesheet" href="css/jquery.mobile.structure-1.3.1.css">
+
+<!-- JQM
+<script src="js/jquery-1.9.0.js"></script>
+<script src="js/jquery.mobile-1.3.1.min.js"></script>-->
+
+
+
+    <style type="text/css">
+	html {height:100%}
+	body {height:100%; margin:0; padding:0}
+	#map_canvas {height:100%; width:100%}
+	</style>
+    
+    <script type="text/javascript" charset="utf-8">
+    
+    // ----------------------Time Set--------------------------------------------------
+      var ms = 0;
+		var state = 0;
+
+		function startstop() {
+			if (state == 0) {
+			state = 1;
+			then = new Date();
+			then.setTime(then.getTime() - ms);
+			}   
+			else {
+			state = 0;
+			now = new Date();
+			ms = now.getTime() - then.getTime();
+
+			hours = Math.floor(ms%(1000 * 60 * 60 * 24)/(1000 * 60 * 60));
+			if (hours < 10)
+			hours = "0" + hours
+
+			minutes = Math.floor((ms%(1000 * 60 * 60))/(1000 * 60));
+			if (minutes < 10)
+			minutes = "0" + minutes
+
+			seconds = Math.floor((ms%(1000 * 60))/1000);
+			if (seconds < 10)
+			seconds = "0" + seconds
+    	
+			document.all('timer').innerHTML = '<h1>'+hours+':'+minutes+':'+seconds+'</h1>';
+   	   		}
+		}
+
+		function swreset() {
+			state = 0;
+			ms = 0;
+			document.all('timer').innerHTML = '<h1>00:00:00</h1>';  
+			
+		}
+
+		function display() {
+		setTimeout("display();", 500);
+		if (state == 1)  {
+		now = new Date();
+		ms = now.getTime() - then.getTime();
+		hours = Math.floor(ms%(1000 * 60 * 60 * 24)/(1000 * 60 * 60));
+		if (hours < 10)
+		hours = "0" + hours
+
+		minutes_divisor = ms%(1000 * 60 * 60);
+		minutes = Math.floor(minutes_divisor/(1000 * 60));
+		if (minutes < 10)
+		minutes = "0" + minutes
+
+		seconds_divisor = ms%(1000 * 60);
+		seconds = Math.floor(seconds_divisor/1000);
+		if (seconds < 10)
+		seconds = "0" + seconds
+
+		document.all('timer').innerHTML = '<h1>'+hours+':'+minutes+':'+seconds+'</h1>';
+   		}
+		}
+        </script>
+
+</head>  
+  
+<body>  
+   <div data-role="page" id="page">
+
+    <!--<div class="btn-group btn-group-justified" align="CENTER">
+		<h1>RunforHealth</h1>
+	</div>-->
+	
+	<div class="navbar navbar-inverse navbar-static-top">
+		<div class="navbar-inner">
+			  <a class="brand" href="#" style="float:center"><center><h1>RunforHealth</h1></center></a>
+		</div>
+	</div><br>
+	
+	<table border="0" cellspacing="0" cellpadding="0" align="CENTER">
+	<tr>
+	<td colspan="2" width="351" height="251">
+	<div id="map_canvas" align="center"></div>
+	</td>
+	</tr>
+
+    </table>
+    <table border="0" cellspacing="0" cellpadding="0" align="CENTER">
+    <form NAME="stpw">
+ <tr>
+	<td>
+    <h4>Time&nbsp;:&nbsp;</h4>
+    </td>
+    <td>
+	<div id="timer" class="logininput" align="center"><h1>00:00:00</h1></div>
+    </td>
+</tr>
+<tr>
+	<td colspan="2">
+	<div onClick="display()" align="center">
+	<button type="button" class="btn btn-small btn-success btn-block" style="width:100%;height:60px;" Name="ssbutton" onClick="startstop()">Start/Stop</button>
+
+	<div onClick="clearMapPolylines()" >
+	<button type="button" class="btn btn-large btn-primary btn-block" style="width:100%;height:60px;" NAME="reset" onClick="swreset()">End</button>
+	</div>
+	</div>
+	</form>
+    	</td>
+</tr>
+</table>
+</div>
+ 
+    
+<script src="http://code.jquery.com/jquery-latest.js"></script>    
 <script type="text/javascript">  
 
         var options = { timeout: 30000 };
@@ -111,387 +230,10 @@ $(function(){
     //  language ภาษา th ,en เป็นต้น  
     //  callback ให้เรียกใช้ฟังก์ชันแสดง แผนที่ initialize  
     $("<script/>", {  
-      "type": "text/javascript",
+      "type": "text/javascript",  
       src: "http://maps.google.com/maps/api/js?v=3.2&sensor=false&language=th&callback=initialize"  
     }).appendTo("body");      
 });  
-</script>
-						<table border="0" cellspacing="0" cellpadding="0" align="CENTER" >
-							<tr>
-								<td colspan="0" width="330" height="350">
-								<br>
-								<br>
-									<div id="map_canvas" align="center"></div><br><br>
-								</td>
-							</tr>						
-							<tr>
-								<td width="100px" height="5px">
-									Distance<h1 id="dist" style="font-size:20px;margin:5px 0px -30px 35px;">    0.0</h1>
-									<center>Time<h1 id="timer" style="font-size:20px;margin:5px 0px -30px 40px;">00:00:00</h1>
-								</td>	
-							</tr>	
-						</table>
-						<br><br>						
-						<center>
-							<button type="button" id="btn-start-stop" class="btn btn-large btn-success" style="width:100%;height:50px;">Start</button>
-							<button type="button" id="btn-pause" class="btn btn-large btn-inverse" style="width:100%;height:50px;">Pause</button>
-						</center>
-										
-						<script src="./js/bootstrap.js"></script>		
-						<script language="javascript">
-						var timeuse = 0;
-						var timeinterval = 0;
-						var timeall = 0;
-						var lap_array = new Array();
-						
-						function millisectotime(mill)
-						{
-							var hour = Math.floor(timeinterval/36000);
-							var min = Math.floor(timeinterval/600)%60;
-							var sec = Math.floor(timeinterval/10)%60;
-
-							if (hour < 10) hour = "0" + hour;
-							if (min < 10) min = "0" + min;
-							if (sec < 10) sec = "0" + sec;
-							return (hour + ":" + min + ":" + sec  );
-
-
-						}
-
-						function TimerOK()
-						{	
-							timeinterval = timeinterval + 1;
-							$('#timer').html(millisectotime(timeinterval));
-							localStorage.setItem('timer_current',timeinterval);
-							localStorage.setItem('timer_history',JSON.stringify(lap_array));
-
-							if(timeuse == 1)
-							{
-								setTimeout('TimerOK()', 100);
-							}
-						}
-
-						function millisectime(mills)
-						{
-							var hour = Math.floor(timeall/36000);
-							var min = Math.floor(timeall/600)%60;
-							var sec = Math.floor(timeall/10)%60;
-
-							if (hour < 10) hour = "0" + hour;
-							if (min < 10) min = "0" + min;
-							if (sec < 10) sec = "0" + sec;
-
-							return (hour + ":" + min + ":" + sec);
-						}
-
-						function ResetTime()
-						{	
-							timeuse = 0;
-							timeinterval = 0;
-							$('#timer').html(millisectotime(timeinterval));
-						}
-
-						function Timeall()
-						{
-							timeall = timeall + timeinterval;
-							$('#timeall').html(millisectime(timeall));
-
-						}
-
-						$(document).ready(function() { // On page load completed do it function.
-							var status = 0;
-							var btntoggle = 0;
-							var btntoggles  =0;
-							//if(localStorage.getItem('time_all'))
-							//timeall = parsInt(localStorage.getItem('time_all'))
-		
-							if(localStorage.getItem('timer_history') && localStorage.getItem('timer_current')){
-								lap_array = JSON.parse(localStorage.getItem('timer_history'));
-								timeinterval = parseInt(localStorage.getItem('timer_current'));
-							}
-							//var timeallstring = "";
-							var buildstring = "";
-
-								for(var i = 0; i < lap_array.length;i++)
-								{
-									buildstring =  '<h1 style="font-size:40px">' + (i+1) + ' - ' + lap_array[i] + '</h1>' + buildstring ;			
-								}
-							//$('#mytime').html(buildstring);
-							$('#mytime2').html(buildstring);
-							//$('#timeall').html(timeallstring);
-							$('#timer').html(millisectotime(timeinterval));
-							
-	
-							$('#btn-delall').on('click',function(){
-								localStorage.removeItem('timer_current');
-								localStorage.removeItem('timer_history');
-								timeinterval = 0;
-								$('#timer').html(millisectotime(timeinterval));
-								$('#mytime').html("");
-								$('#mytime2').html("");
-									lap_array.length = 0;
-							});
-	
-	
-	/*$('#btn-pause').on('click',function(){
-		if (btntoggle == 1) //lap
-		{
-			lap_array.push(millisectotime(timeinterval));
-			var buildstring = "";
-			for(var i = 0; i < lap_array.length;i++)
-			{
-				buildstring =  '<h1 style="font-size:30px">' + (i+1) + ' - ' + lap_array[i] + '</h1>' + buildstring ;
-				
-
-			}
-			$('#mytime').html(buildstring);
-			$('#mytime2').html(buildstring);
-		}
-		else
-		{
-			timeinterval = 0;
-			$('#timer').html(millisectotime(timeinterval));
-		}
-
-	});*/
-	
-							$('#btn-pause').on('click',function(){
-								if (btntoggles == 0)
-								{
-									$('#btn-pause').removeClass("btn-inverse");
-									$('#btn-pause').addClass("btn-success");
-									$('#btn-pause').html('Start');
-									timeuse = 0;
-									btntoggles =1;
-								}
-								else
-								{
-									$('#btn-pause').removeClass("btn-success");
-									$('#btn-pause').addClass("btn-inverse");
-									$('#btn-pause').html('Pause');
-									timeuse = 1;
-									TimerOK();
-									btntoggles =0;
-								}
-							});
-	
-	/*$('#btn-pause').on('click',function(){
-		
-			timeinterval = 0;
-			$('#timer').html(millisectotime(timeinterval));
-		});*/
-	
-							$('#btn-start-stop').on('click',function(){
-								if (btntoggle == 0)
-								{
-									$('#btn-start-stop').removeClass("btn-success");
-									$('#btn-start-stop').addClass("btn-danger");
-									$('#btn-start-stop').html('Stop');
-	
-									$('#btn-pause').removeClass("btn-primary");
-									$('#btn-pause').addClass("btn-inverse");
-									$('#btn-pause').html('Pause');
-
-									timeuse = 1;			
-									TimerOK();
-									btntoggle = 1;
-								}
-								else
-								{
-									$('#btn-start-stop').removeClass("btn-danger");
-									$('#btn-start-stop').addClass("btn-success");
-									$('#btn-start-stop').html('Start');
-			
-									$('#btn-pause').removeClass("btn-success");
-									$('#btn-pause').addClass("btn-inverse");
-									$('#btn-pause').html('Pause');
-									//timeuse = 0;
-									btntoggle = 0;
-									Timeall();
-			
-									lap_array.push(millisectotime(timeinterval));
-								
-									var buildstring = "";
-										for(var i = 0; i < lap_array.length;i++)
-										{
-										buildstring =  '<h1 style="font-size:30px">' + (i+1) + ' - ' + lap_array[i] + '</h1>' + buildstring ;
-										}
-			
-									$('#mytime2').html(buildstring);
-									ResetTime();
-								}
-
-							});
-						});
-
-
-</script>
-						
-					<div data-role="footer" data-position="fixed" class="nav-glyphish-example">
-						
-						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
-							<ul>
-								<li><a href="#running" id="brunning" >Running</a></li>
-								<li><a href="#route" id="broute">Route</a></li>
-								<li><a href="#friend" id="bfriend" >Friend</a></li>
-								<li><a href="#history" id="bhistory" >History</a></li>
-							</ul>
-						</div>
-					</div>		
-		</div>					
-
-		<div data-role="page" id="route">
-					<div data-role="header">
-						<h1>Exercise Healthy</h1>
-					</div>
-		2
-
-					<div data-role="footer" data-position="fixed" class="nav-glyphish-example">
-						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
-							<ul>
-								<li><a href="#running" id="brunning" >Running</a></li>
-								<li><a href="#route" id="broute">Route</a></li>
-								<li><a href="#friend" id="bfriend" >Friend</a></li>
-								<li><a href="#history" id="bhistory" >History</a></li>
-							</ul>
-						</div>
-					</div>	
-		</div>
-
-		<div data-role="page" id="friend">
-					<div data-role="header">
-						<h1>Exercise Healthy</h1>
-					</div>
-		3
-
-					<div data-role="footer" data-position="fixed" class="nav-glyphish-example">
-						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
-							<ul>
-								<li><a href="#running" id="brunning" >Running</a></li>
-								<li><a href="#route" id="broute">Route</a></li>
-								<li><a href="#friend" id="bfriend" >Friend</a></li>
-								<li><a href="#history" id="bhistory" >History</a></li>
-							</ul>
-						</div>
-					</div>	
-		</div>
-
-		<div data-role="page" id="history">
-					<div data-role="header">
-						<h1>History</h1>
-					</div>
-					<style>
-						.block {
-								display: block;
-								margin: 0 0 10px;
-								font-size: 13px;
-								word-break: break-all;
-								word-wrap: break-word;
-								background-color: #cccccc;
-								border: 1px solid #ccc;
-								border: 1px solid rgba(0, 0, 0, 0.15);
-								-webkit-border-radius: 4px;
-								-moz-border-radius: 4px;
-								border-radius: 4px;
-								}
-					</style>
-					
-					<div id="mytimeblock1" class="block" style="overflow-x: hidden;overflow-y: scroll;height:60%;margin: 0px 5px 5px 5px;">
-						<center id="mytime2">
-						
-						</center>
-					</div>
-						<button type="button" id="btn-delall" class="btn-danger" style="width:100%;height:60px;margin:140% 0% 0% 0%">DELETE ALL DATA</button>
-	
-					<div data-role="footer" data-position="fixed" class="nav-glyphish-example">
-						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
-							<ul>
-								<li><a href="#running" id="brunning" >Running</a></li>
-								<li><a href="#total time" id="bTotal">Total Time</a></li>
-								<li><a href="#total distanc" id="bdistanc" >Total Distanc</a></li>
-								<li><a href="#history" id="bhistory" >History</a></li>
-							</ul>
-						</div>
-					</div>
-		</div>
-		
-		<div data-role="page" id="total time">
-					<div data-role="header">
-						<h1>Exercise Healthy</h1>
-					</div>
-					<style>
-						.block {
-								display: block;
-								margin: 0 0 10px;
-								font-size: 13px;
-								word-break: break-all;
-								word-wrap: break-word;
-								background-color: #cccccc;
-								border: 1px solid #ccc;
-								border: 1px solid rgba(0, 0, 0, 0.15);
-								-webkit-border-radius: 4px;
-								-moz-border-radius: 4px;
-								border-radius: 4px;
-								}
-					</style>
-					
-					<div id="mytimeblock2" class="block" style="overflow-x: hidden;overflow-y: scroll;height:60%;margin: 0px 5px 5px 5px;">
-						<center>Tital Time</center>
-						<center id="timeall">
-						
-						</center>
-
-					<div data-role="footer" data-position="fixed" class="nav-glyphish-example">
-						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
-							<ul>
-								<li><a href="#running" id="brunning" >Running</a></li>
-								<li><a href="#total time" id="bTotal">Total Time</a></li>
-								<li><a href="#total distanc" id="bdistanc" >Total Distanc</a></li>
-								<li><a href="#history" id="bhistory" >History</a></li>
-							</ul>
-						</div>
-					</div>	
-					</div>
-		</div>			
-		
-		<div data-role="page" id="total distanc">
-					<div data-role="header">
-						<h1>Exercise Healthy</h1>
-					</div>
-					<style>
-						.block {
-								display: block;
-								margin: 0 0 10px;
-								font-size: 13px;
-								word-break: break-all;
-								word-wrap: break-word;
-								background-color: #cccccc;
-								border: 1px solid #ccc;
-								border: 1px solid rgba(0, 0, 0, 0.15);
-								-webkit-border-radius: 4px;
-								-moz-border-radius: 4px;
-								border-radius: 4px;
-								}
-					</style>
-					
-					<div id="mytimeblock3" class="block" style="overflow-x: hidden;overflow-y: scroll;height:60%;margin: 0px 5px 5px 5px;">
-						<center>Total distanc</center>
-						<center id="distancall">
-						
-						</center>
-
-					<div data-role="footer" data-position="fixed" class="nav-glyphish-example">
-						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
-							<ul>
-								<li><a href="#running" id="brunning" >Running</a></li>
-								<li><a href="#total time" id="bTotal">Total Time</a></li>
-								<li><a href="#total distanc" id="bdistanc" >Total Distanc</a></li>
-								<li><a href="#history" id="bhistory" >History</a></li>
-							</ul>
-						</div>
-					</div>	
-					</div>
-		</div>			
-					
-	</body>
-</html>
+</script>    
+</body>  
+</html>  

@@ -194,7 +194,7 @@ function startDrawing(poly,color){
     listener=GGM.event.addListener(map, "bounds_changed", function(event){  
         var path = poly.getPath();  
   
-        path.push(event.latLng);  
+        path.push(my_Latlng);  
           
         var data_path="";  
         $.each(path.b,function(j,k){  
@@ -206,11 +206,12 @@ function startDrawing(poly,color){
         // Add a new marker at the new plotted point on the polyline.  
         var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
         marker[i] = new GGM.Marker({  
-          position: event.latLng,  
+          position: my_Latlng,  
           title: '#' + path.getLength(),  
           map: map,  
           icon: image  
-        });    
+        });
+        
         i++;  
     });           
 }  

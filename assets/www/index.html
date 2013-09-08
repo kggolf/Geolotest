@@ -2,11 +2,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+		<script src="./js/jquery-latest.js"></script>
+		<link rel="stylesheet" href="./css/jquery.mobile-1.3.2.min.css" />
 		<link href="./css/bootstrap.css" rel="stylesheet">
 		<link href="./css/bootstrap-responsive.css" rel="stylesheet">	
-		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+		<script src="./js/jquery-1.9.1.min.js"></script>
+		<script src="./js/jquery.mobile-1.3.2.min.js"></script>
+		
 </head>
 	<body style="overflow:hidden" onload="onDeviceReady()">
 
@@ -23,58 +25,7 @@
 							body {height:100%; margin:0; padding:0}
 							#map_canvas {height:100%; width:100%}
 						</style>
-					<!--	<script type="text/javascript" charset="utf-8">
-
-			// Wait for Cordova to load
-			
-			document.addEventListener("deviceready", onDeviceReady, false);
-
-			var watchID = null;
-
-			// Cordova is ready
-			
-			function onDeviceReady() {
-				// Throw an error if no update is received every 30 seconds
-				var options = { timeout: 30000 };
-				watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
-			}
-
-				// onSuccess Geolocation
-				//
-			function onSuccess(position) {
-				/*var element = document.getElementById('geolocation');
-				element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
-								'Longitude: ' + position.coords.longitude     + '<br />' +
-								'<hr />'      + element.innerHTML;*/
-				mapSetup(position.coords.latitude,position.coords.longitude);
-        
-			function mapSetup(lat,long){
-
-				console.log("setting up map");
-				var firstLoc = new google.maps.LatLng(lat,long);
-				var myOptions = {
-				zoom: 17,
-				center: firstLoc,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-
-				var map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
-				var marker = new google.maps.Marker({
-				position: firstLoc,
-				map: map,
-				});
- 
-			}
-			}
-				// onError Callback receives a PositionError object
-			
-			function onError(error) {
-				alert('code: '    + error.code    + '\n' +
-				'message: ' + error.message + '\n');
-			}	
-			</script>-->
-			
-<script src="http://code.jquery.com/jquery-latest.js"></script>    
+						   
 <script type="text/javascript">  
 
         var options = { timeout: 30000 };
@@ -168,6 +119,8 @@ $(function(){
 						<table border="0" cellspacing="0" cellpadding="0" align="CENTER" >
 							<tr>
 								<td colspan="0" width="330" height="350">
+								<br>
+								<br>
 									<div id="map_canvas" align="center"></div><br><br>
 								</td>
 							</tr>						
@@ -443,7 +396,7 @@ $(function(){
 								}
 					</style>
 					
-					<div id="mytimeblock2" class="block" style="overflow-x: hidden;overflow-y: scroll;height:60%;margin: 0px 5px 5px 5px;">
+					<div id="mytimeblock1" class="block" style="overflow-x: hidden;overflow-y: scroll;height:60%;margin: 0px 5px 5px 5px;">
 						<center id="mytime2">
 						
 						</center>
@@ -454,13 +407,91 @@ $(function(){
 						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
 							<ul>
 								<li><a href="#running" id="brunning" >Running</a></li>
-								<li><a href="#route" id="broute">Route</a></li>
-								<li><a href="#friend" id="bfriend" >Friend</a></li>
+								<li><a href="#total time" id="bTotal">Total Time</a></li>
+								<li><a href="#total distanc" id="bdistanc" >Total Distanc</a></li>
 								<li><a href="#history" id="bhistory" >History</a></li>
 							</ul>
 						</div>
 					</div>
 		</div>
-	
+		
+		<div data-role="page" id="total time">
+					<div data-role="header">
+						<h1>Exercise Healthy</h1>
+					</div>
+					<style>
+						.block {
+								display: block;
+								margin: 0 0 10px;
+								font-size: 13px;
+								word-break: break-all;
+								word-wrap: break-word;
+								background-color: #cccccc;
+								border: 1px solid #ccc;
+								border: 1px solid rgba(0, 0, 0, 0.15);
+								-webkit-border-radius: 4px;
+								-moz-border-radius: 4px;
+								border-radius: 4px;
+								}
+					</style>
+					
+					<div id="mytimeblock2" class="block" style="overflow-x: hidden;overflow-y: scroll;height:60%;margin: 0px 5px 5px 5px;">
+						<center>Tital Time</center>
+						<center id="timeall">
+						
+						</center>
+
+					<div data-role="footer" data-position="fixed" class="nav-glyphish-example">
+						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
+							<ul>
+								<li><a href="#running" id="brunning" >Running</a></li>
+								<li><a href="#total time" id="bTotal">Total Time</a></li>
+								<li><a href="#total distanc" id="bdistanc" >Total Distanc</a></li>
+								<li><a href="#history" id="bhistory" >History</a></li>
+							</ul>
+						</div>
+					</div>	
+					</div>
+		</div>			
+		
+		<div data-role="page" id="total distanc">
+					<div data-role="header">
+						<h1>Exercise Healthy</h1>
+					</div>
+					<style>
+						.block {
+								display: block;
+								margin: 0 0 10px;
+								font-size: 13px;
+								word-break: break-all;
+								word-wrap: break-word;
+								background-color: #cccccc;
+								border: 1px solid #ccc;
+								border: 1px solid rgba(0, 0, 0, 0.15);
+								-webkit-border-radius: 4px;
+								-moz-border-radius: 4px;
+								border-radius: 4px;
+								}
+					</style>
+					
+					<div id="mytimeblock3" class="block" style="overflow-x: hidden;overflow-y: scroll;height:60%;margin: 0px 5px 5px 5px;">
+						<center>Total distanc</center>
+						<center id="distancall">
+						
+						</center>
+
+					<div data-role="footer" data-position="fixed" class="nav-glyphish-example">
+						<div data-role="navbar" class="nav-glyphish-example" data-grid="c">
+							<ul>
+								<li><a href="#running" id="brunning" >Running</a></li>
+								<li><a href="#total time" id="bTotal">Total Time</a></li>
+								<li><a href="#total distanc" id="bdistanc" >Total Distanc</a></li>
+								<li><a href="#history" id="bhistory" >History</a></li>
+							</ul>
+						</div>
+					</div>	
+					</div>
+		</div>			
+					
 	</body>
 </html>

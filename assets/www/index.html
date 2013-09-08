@@ -126,7 +126,6 @@ var polygon;
 var my_Latlng;
 var marker=[];  
 var Points=[];
-var arr_path=[];
   
 function swap_class(buttonId) {  
     $("#hand_b").removeClass("selected");  
@@ -170,7 +169,7 @@ function getIcon(color) {
 }  
   
   
-function startLine(arr_path) {  
+function startLine() {  
   swap_class("line_b");  
     var color = getColor(true);
     
@@ -179,7 +178,6 @@ function startLine(arr_path) {
       geodesic:true,  
       strokeOpacity: 1.0,  
       strokeWeight: 3
-      path: arr_path
     }  
     poly[i] = new GGM.Polyline(polyOptions);  
     poly[i].setMap(map);
@@ -194,13 +192,12 @@ function startDrawing(poly,color){
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
     }         
-    listener=GGM.event.addListener(map, "bounds_changed", function(event){  
+    listener=GGM.event.addListener(map, "bounds_changed", function(){  
         //var path = poly.getPath();  
   	var my_Point = poly.getPosition(my_Latlng);
   	
         path.push(my_Point);
         map.panTo(my_Point);
-        startLine(arr_path);
           
         var data_path="";  
         $.each(path.b,function(j,k){  

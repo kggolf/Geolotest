@@ -101,13 +101,14 @@ var options = { timeout: 300000 };
 var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
   
 /* ส่วนสำหรับการ random ค่าสีและ event */  
-var COLORS =[  
+/* 1var COLORS =[  
     ["red", "#ff0000"],   
     ["orange", "#ff8800"],  
     ["green","#008000"],  
     ["blue", "#000080"],  
     ["purple", "#800080"]  
-];  
+]; 
+*/ 
 var colorIndex_ = 0;  
 var listener;  
   
@@ -156,9 +157,9 @@ function stopEditing() {
     }  
 }  
    
-function getColor(named) {  
+/*2function getColor(named) {  
   return COLORS[(colorIndex_++) % COLORS.length][named ? 0 : 1];  
-}  
+}  */
    
 function getIcon(color) {  
   var icon = new GIcon();  
@@ -171,12 +172,14 @@ function getIcon(color) {
   
 function startLine() {  
   swap_class("line_b");  
-    var color = getColor(true);  
+    //3var color = getColor(true);  
     var polyOptions = {  
-      strokeColor: color,  
+      //4strokeColor: color,  
       geodesic:true,  
       strokeOpacity: 1.0,  
-      strokeWeight: 3  
+      strokeWeight: 3
+      
+      strokeColor: "#FF0000", // สี  
     }  
     poly = new GGM.Polyline(polyOptions);  
     poly.setMap(map);  
@@ -240,14 +243,13 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
     return f * 6378.137;   
   }   
 
-  /*
   GGM.Polyline.prototype.inKm = function(n){   
     var a = this.getPath(n), len = a.getLength(), dist = 0;   
     for(var i=0; i<len-1; i++){   
       dist += a.getAt(i).kmTo(a.getAt(i+1));   
     }   
     return dist;   
-  }  */
+  }
     
 }  
 

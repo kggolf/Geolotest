@@ -101,14 +101,14 @@ var options = { timeout: 300000 };
 var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
   
 /* ส่วนสำหรับการ random ค่าสีและ event */  
-/* 1var COLORS =[  
+var COLORS =[  
     ["red", "#ff0000"],   
     ["orange", "#ff8800"],  
     ["green","#008000"],  
     ["blue", "#000080"],  
     ["purple", "#800080"]  
 ]; 
-*/ 
+
 var colorIndex_ = 0;  
 var listener;  
   
@@ -157,9 +157,9 @@ function stopEditing() {
     }  
 }  
    
-/*2function getColor(named) {  
+function getColor(named) {  
   return COLORS[(colorIndex_++) % COLORS.length][named ? 0 : 1];  
-}  */
+} 
    
 function getIcon(color) {  
   var icon = new GIcon();  
@@ -172,24 +172,23 @@ function getIcon(color) {
   
 function startLine() {  
   swap_class("line_b");  
-    //3var color = getColor(true);  
+    var color = "#FF0000";//getColor(true);  
     var polyOptions = {  
-      //4strokeColor: color,  
+      strokeColor: color,  
       geodesic:true,  
       strokeOpacity: 1.0,  
       strokeWeight: 3
       
-      strokeColor: "#FF0000", // สี  
     }  
     poly = new GGM.Polyline(polyOptions);  
     poly.setMap(map);  
       
-    startDrawing(poly);  
+    startDrawing(poly,color);  
   
 }  
   
   
-function startDrawing(poly){  
+function startDrawing(poly,color){  
     var i=0;  
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
@@ -207,7 +206,7 @@ function startDrawing(poly){
         $("#distance").val(poly.inKm());  
   
         // Add a new marker at the new plotted point on the polyline.  
-        var image="http://google.com/mapfiles/ms/micons/"+#FF0000+".png";  
+        var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
         marker[i] = new GGM.Marker({  
           position: event.latLng,  
           title: '#' + path.getLength(),  

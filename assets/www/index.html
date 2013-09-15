@@ -184,12 +184,12 @@ function startLine() {
     poly = new GGM.Polyline(polyOptions);  
     poly.setMap(map);  
       
-    startDrawing(poly,color);  
+    startDrawing(poly);  
   
 }  
   
   
-function startDrawing(poly,color){  
+function startDrawing(poly){  
     var i=0;  
     if(listener!=undefined){  
         GGM.event.removeListener(listener);  
@@ -207,7 +207,7 @@ function startDrawing(poly,color){
         $("#distance").val(poly.inKm());  
   
         // Add a new marker at the new plotted point on the polyline.  
-        var image="http://google.com/mapfiles/ms/micons/"+color+".png";  
+        var image="http://google.com/mapfiles/ms/micons/"+#FF0000+".png";  
         marker[i] = new GGM.Marker({  
           position: event.latLng,  
           title: '#' + path.getLength(),  

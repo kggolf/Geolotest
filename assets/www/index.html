@@ -189,9 +189,9 @@ function startDrawing(poly,color){
         path.push(event.latLng);  
           
         var data_path="";  
-        $.each(path.b,function(j,k){  
+        /*1$.each(path.b,function(j,k){  
             data_path+=path.b[j].ra+","+path.b[j].sa+"\r\n";  
-        });  
+        });  */
         $("#path_arr").val(data_path);  
         $("#distance").val(poly.inKm());  
   

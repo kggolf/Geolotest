@@ -110,15 +110,7 @@ var COLORS =[
 ];  
 var colorIndex_ = 0;  
 var listener;  
-  
- /* ส่วนของการกำหนดค่า สำหรับคำนวณพื้นที่ */  
-/*var earthRadiusMeters=6367460.0;  
-var metersPerDegree=2.0*Math.PI*earthRadiusMeters/360.0;  
-var degreesPerRadian=180.0/Math.PI;  
-var radiansPerDegree=Math.PI/180.0;  
-var metersPerKm=1000.0;  */
-   
-   
+    
 var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
 var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
 var poly;  
@@ -247,16 +239,7 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
     }   
     return dist;   
   }  
-    
-  GGM.Polygon.prototype.inKm = function(n){   
-    var a = this.getPath(n), len = a.getLength(), dist = 0;   
-    var dist2=0;  
-    for(var i=0; i<len-1; i++){   
-      dist += a.getAt(i).kmTo(a.getAt(i+1));   
-    }   
-    dist2+=a.getAt(len-1).kmTo(a.getAt(0));   
-    return dist+dist2;   
-  }    
+      
     
 }  
 

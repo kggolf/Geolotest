@@ -143,12 +143,11 @@ var arr_path=[]; // กำหนดตัวแปรสำหรับเก็
 var makePolyline; // กำหนดตัวแปร ฟังก์ชั่น สร้างเส้น polylines  
 var objPolylines=[]; // กำหนดตัวแปรสำหรับเก็บค่า object ของ polylines
 var data=[];//test
-data[0]='position'; 
 function initialize(position) { // ฟังก์ชันแสดงแผนที่  
     GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
     // กำหนดจุดเริ่มต้นของแผนที่  
     
-    var my_Latlng  =  new GGM.LatLng(data[0].coords.latitude,data[0].coords.longitude); //test
+    var my_Latlng  =  new GGM.LatLng(position.coords.latitude,position.coords.longitude); //test
     
     var my_mapTypeId=GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง  
     // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas  

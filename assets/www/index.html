@@ -81,6 +81,8 @@
 		seconds = "0" + seconds
 
 		document.all('timer').innerHTML = '<h1>'+hours+':'+minutes+':'+seconds+'</h1>';
+		   
+		 
    		}
 		}
         </script>
@@ -111,7 +113,7 @@
     <h4>Time&nbsp;:&nbsp;</h4>
     </td>
     <td>
-    	<p id="track_info_info"></p> <!-- test -->
+    	<p id="track_info_info">Travelled 0.00 km</p> <!-- test -->
 	<div id="timer" class="logininput" align="center"><h1>00:00:00</h1></div>
     </td>
 </tr>
@@ -171,11 +173,12 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
 	    
 	    total_km += gps_distance(position[i].coords.latitude, position[i].coords.longitude, position[i+1].coords.latitude, position[i+1].coords.longitude);
 	}
-	
+
+	 
 	var total_km_rounded = total_km.toFixed(2);
-	
-    // Display total distance and timetest  test
-    $("#track_info_info").html('Travelled <strong>' + total_km_rounded + '</strong> km' ); 
+
+	// Display total distance and timetest  test
+   $("#track_info_info").html('Travelled <strong>' + total_km_rounded + '</strong> km' ); 
 
     var my_Marker = new GGM.Marker({ // สร้างตัว marker  
         position: my_Latlng,  // กำหนดไว้ที่เดียวกับจุดกึ่งกลาง  

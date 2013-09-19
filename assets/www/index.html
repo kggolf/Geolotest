@@ -151,8 +151,6 @@ function initialize(position) { // �ѧ��ѹ�ʴ�Ἱ���
     // ��˹��ش������鹢ͧἹ���  
     
    var my_Latlng  =  new GGM.LatLng(position.coords.latitude,position.coords.longitude);   //test
-    
-	arr.push(my_Latlng);
 	
     var my_mapTypeId=GGM.MapTypeId.ROADMAP; // ��˹��ٻẺἹ������ʴ�  
     // ��˹� DOM object �������Ἱ�����ʴ� ������� div id=map_canvas  
@@ -165,13 +163,13 @@ function initialize(position) { // �ѧ��ѹ�ʴ�Ἱ���
     };  
     map = new GGM.Map(my_DivObj,myOptions);// ���ҧἹ�������纵�������㹪��� map  
     
-      
+    arr.push(my_Latlng);
       // Calculate the total distance travelled  test
 	var total_km = 0;
 
-	for(i = 0; i < position.length; i++){
+	for(i = 0; i < arr.length; i++){
 	    
-	    if(i == (position.length - 1)){
+	    if(i == (arr.length - 1)){
 	        break;
 	    }
 	    

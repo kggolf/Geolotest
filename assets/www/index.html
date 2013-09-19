@@ -139,27 +139,31 @@
         var options = { timeout: 30000 };
         var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
 
-var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
-var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
-var arr_path=[]; // กำหนดตัวแปรสำหรับเก็บค่าอาเรย์ ตำแหน่ง path  
-var makePolyline; // กำหนดตัวแปร ฟังก์ชั่น สร้างเส้น polylines  
-var objPolylines=[]; // กำหนดตัวแปรสำหรับเก็บค่า object ของ polylines
-function initialize(position) { // ฟังก์ชันแสดงแผนที่  
-    GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
-    // กำหนดจุดเริ่มต้นของแผนที่  
+var map; // ��˹������ map ����ҹ�͡�ѧ��ѹ �����������ö���¡��ҹ �ҡ��ǹ�����  
+var GGM; // ��˹������ GGM ����� google.maps Object �������¡��ҹ����¢��  
+var arr_path=[]; // ��˹����������Ѻ�纤�������� ���˹� path  
+var makePolyline; // ��˹������ �ѧ���� ���ҧ��� polylines  
+var objPolylines=[]; // ��˹����������Ѻ�纤�� object �ͧ polylines
+var arr=[];
+
+function initialize(position) { // �ѧ��ѹ�ʴ�Ἱ���  
+    GGM=new Object(google.maps); // �纵���� google.maps Object ���㹵���� GGM  
+    // ��˹��ش������鹢ͧἹ���  
     
    var my_Latlng  =  new GGM.LatLng(position.coords.latitude,position.coords.longitude);   //test
     
-    var my_mapTypeId=GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง  
-    // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas  
+	arr.push(my_Latlng);
+	
+    var my_mapTypeId=GGM.MapTypeId.ROADMAP; // ��˹��ٻẺἹ������ʴ�  
+    // ��˹� DOM object �������Ἱ�����ʴ� ������� div id=map_canvas  
     var my_DivObj=$("#map_canvas")[0];   
-    // กำหนด Option ของแผนที่  
+    // ��˹� Option �ͧἹ���  
     var myOptions = {  
-        zoom: 16, // กำหนดขนาดการ zoom  
-        center: my_Latlng , // กำหนดจุดกึ่งกลาง  
-        mapTypeId:my_mapTypeId // กำหนดรูปแบบแผนที่  
+        zoom: 16, // ��˹���Ҵ��� zoom  
+        center: my_Latlng , // ��˹��ش��觡�ҧ  
+        mapTypeId:my_mapTypeId // ��˹��ٻẺἹ���  
     };  
-    map = new GGM.Map(my_DivObj,myOptions);// สร้างแผนที่และเก็บตัวแปรไว้ในชื่อ map  
+    map = new GGM.Map(my_DivObj,myOptions);// ���ҧἹ�������纵�������㹪��� map  
     
       
       // Calculate the total distance travelled  test
@@ -171,7 +175,7 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
 	        break;
 	    }
 	    
-	    total_km += gps_distance(position[i].coords.latitude, position[i].coords.longitude, position[i+1].coords.latitude, position[i+1].coords.longitude);
+	    total_km += gps_distance(arr[i],arr[i+1]);
 	}
 
 	 
@@ -180,27 +184,27 @@ function initialize(position) { // ฟังก์ชันแสดงแผน
 	// Display total distance and timetest  test
    $("#track_info_info").html('Travelled <strong>' + total_km_rounded + '</strong> km' ); 
 
-    var my_Marker = new GGM.Marker({ // สร้างตัว marker  
-        position: my_Latlng,  // กำหนดไว้ที่เดียวกับจุดกึ่งกลาง  
-        map: map, // กำหนดว่า marker นี้ใช้กับแผนที่ชื่อ instance ว่า map  
-        draggable:false, // กำหนดให้สามารถลากตัว marker นี้ได้  
-        title:"คลิกลากเพื่อหาตำแหน่งจุดที่ต้องการ!" // แสดง title เมื่อเอาเมาส์มาอยู่เหนือ  
+    var my_Marker = new GGM.Marker({ // ���ҧ��� marker  
+        position: my_Latlng,  // ��˹���������ǡѺ�ش��觡�ҧ  
+        map: map, // ��˹���� marker �����ѺἹ������ instance ��� map  
+        draggable:false, // ��˹��������ö�ҡ��� marker �����  
+        title:"��ԡ�ҡ�����ҵ��˹觨ش����ͧ���!" // �ʴ� title ��������������������˹��  
     });  
     
       
-    // กำหนด event ให้กับตัว marker เมื่อสิ้นสุดการลากตัว marker ให้ทำงานอะไร  
+    // ��˹� event ���Ѻ��� marker ���������ش����ҡ��� marker ���ӧҹ����  
     GGM.event.addListener(map, "bounds_changed", function() {  
-        var my_Point = my_Marker.getPosition(my_Latlng);  // หาตำแหน่งของตัว marker เมื่อกดลากแล้วปล่อย  
-        arr_path.push(my_Point); // เพิ่มค่าตำแหน่ง จากตัว marker ตำแหน่งล่าสุด  
-        map.panTo(my_Point);  // ให้แผนที่แสดงไปที่ตัว marker ล่าสุด  
+        var my_Point = my_Marker.getPosition(my_Latlng);  // �ҵ��˹觢ͧ��� marker ����͡��ҡ���ǻ����  
+        arr_path.push(my_Point); // ������ҵ��˹� �ҡ��� marker ���˹�����ش  
+        map.panTo(my_Point);  // ���Ἱ����ʴ�价���� marker ����ش  
                   
-        makePolyline(arr_path); // ส่งค่าตำแหน่งใน array ไปสร้างเส้น polylines ในแผนที่  
+        makePolyline(arr_path); // �觤�ҵ��˹�� array ����ҧ��� polylines �Ἱ���  
 //      console.log(arr_path);  
     });       
   
-    // กำหนด event ให้กับตัวแผนที่ เมื่อมีการเปลี่ยนแปลงการ zoom  
+    // ��˹� event ���Ѻ���Ἱ��� ������ա������¹�ŧ��� zoom  
     GGM.event.addListener(map, "zoom_changed", function() {  
-        $("#zoom_value").val(map.getZoom()); // เอาขนาด zoom ของแผนที่แสดงใน textbox id=zoom_value    
+        $("#zoom_value").val(map.getZoom()); // ��Ң�Ҵ zoom �ͧἹ����ʴ�� textbox id=zoom_value    
     });  
 }  
   
@@ -211,33 +215,40 @@ function onError(error) {
     
     
     //test
-function gps_distance(lat1, lon1, lat2, lon2){
 	
-    var R = 6371; // km
-    var dLat = (lat2-lat1) * (Math.PI / 180);
-    var dLon = (lon2-lon1) * (Math.PI / 180);
-    var lat1 = lat1 * (Math.PI / 180);
-    var lat2 = lat2 * (Math.PI / 180);
+	var R = 6371; // km
+    var toRad = Math.PI / 180;
+	
+function gps_distance(pos1, pos2){
+		var lat1 = pos1.latitude;
+        var lon1 = pos1.longitude;
+        var lat2 = pos2.latitude;
+        var lon2 = pos2.longitude;
+		
+		var dLat = (lat2 - lat1) * toRad;
+        var dLon = (lon2 - lon1) * toRad;
+        lat1 = lat1 * toRad;
+        lat2 = lat2 * toRad;
 
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c;
-    
-    return d;
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+
+        return d;
 }
   
   
 makePolyline=function(arr_path){  
 //  console.log(arr_path.length);  
     var i=arr_path.length-1;  
-    objPolylines[i] = new GGM.Polyline({ // กำหนดรูปแบบของเส้น polylines  
-        path: arr_path,// array ตำแหน่งที่เก็บค่า lat,lon  
-        strokeColor: "#FF0000", // สี  
-        strokeOpacity: 1.0, // ความโปร่งใส  
-        strokeWeight: 2 //ความหน้าของเส้น  
+    objPolylines[i] = new GGM.Polyline({ // ��˹��ٻẺ�ͧ��� polylines  
+        path: arr_path,// array ���˹觷���纤�� lat,lon  
+        strokeColor: "#FF0000", // ��  
+        strokeOpacity: 1.0, // ���������  
+        strokeWeight: 2 //����˹�Ңͧ���  
     });   
-    objPolylines[i].setMap(map);    // สร้างเส้น polylines ในแผนที่  
+    objPolylines[i].setMap(map);    // ���ҧ��� polylines �Ἱ���  
 //  console.log(arr_path);  
 //  console.log(objPolylines);  
 }  
@@ -251,13 +262,13 @@ clearMapPolylines=function(){
 //  console.log(arr_path);  
 }  
 $(function(){  
-    // โหลด สคริป google map api เมื่อเว็บโหลดเรียบร้อยแล้ว  
-    // ค่าตัวแปร ที่ส่งไปในไฟล์ google map api  
+    // ��Ŵ ʤ�Ի google map api ����������Ŵ���º��������  
+    // ��ҵ���� ���������� google map api  
     // v=3.2&sensor=false&language=th&callback=initialize  
-    //  v เวอร์ชัน่ 3.2  
-    //  sensor กำหนดให้สามารถแสดงตำแหน่งทำเปิดแผนที่อยู่ได้ เหมาะสำหรับมือถือ ปกติใช้ false  
-    //  language ภาษา th ,en เป็นต้น  
-    //  callback ให้เรียกใช้ฟังก์ชันแสดง แผนที่ initialize  
+    //  v �����ѹ� 3.2  
+    //  sensor ��˹��������ö�ʴ����˹觷��ԴἹ��������� ���������Ѻ��Ͷ�� ������ false  
+    //  language ���� th ,en �繵�  
+    //  callback ������¡��ѧ��ѹ�ʴ� Ἱ��� initialize  
     $("<script/>", {  
       "type": "text/javascript",  
       src: "http://maps.google.com/maps/api/js?v=3.2&sensor=false&language=th&callback=initialize"  

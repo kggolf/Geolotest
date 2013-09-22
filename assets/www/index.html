@@ -16,8 +16,19 @@
     //
     function onDeviceReady() {
         // Throw an error if no update is received every 30 seconds
-        var options = { timeout: 30000 };
-        watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+		
+		if (!navigator.geolocation) {
+					alert("Geolocation is not supported by your browser");
+					return;
+			}
+									
+			navigator.geolocation.watchPosition(onSucces, onError, {
+			enableHighAccuracy: true,
+			timeout: Infinity,
+			maximumAge: 10000 //10000
+			});
+        //var options = { timeout: 30000 };
+        //watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
     }
 
     // onSuccess Geolocation

@@ -7,9 +7,6 @@
 <title>RunforHealth</title>
 
     <script type="text/javascript" charset="utf-8" src="cordova-2.5.0.js"></script>
-    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
-    
-    
 	
 	<link href="bootstrap.css" rel="stylesheet">
 	<script src="bootstrap.js"></script>
@@ -150,47 +147,47 @@
         var options = { timeout: 30000 };
         var watchID = navigator.geolocation.watchPosition(initialize, onError, options);
 
-var map; // กำหนดตัวแปร map ไว้ด้านนอกฟังก์ชัน เพื่อให้สามารถเรียกใช้งาน จากส่วนอื่นได้  
-var GGM; // กำหนดตัวแปร GGM ไว้เก็บ google.maps Object จะได้เรียกใช้งานได้ง่ายขึ้น  
-var arr_path=[]; // กำหนดตัวแปรสำหรับเก็บค่าอาเรย์ ตำแหน่ง path  
-var makePolyline; // กำหนดตัวแปร ฟังก์ชั่น สร้างเส้น polylines  
-var objPolylines=[]; // กำหนดตัวแปรสำหรับเก็บค่า object ของ polylines  
-function initialize(position) { // ฟังก์ชันแสดงแผนที่  
-    GGM=new Object(google.maps); // เก็บตัวแปร google.maps Object ไว้ในตัวแปร GGM  
-    // กำหนดจุดเริ่มต้นของแผนที่  
+var map; // ˹Ե҇ἃ map 利թҹڍѧ¬ˑ٠࿗鎣̩˒öᄕ¡㫩Ȓ٠ɒ釹Η躤թ  
+var GGM; // ˹Ե҇ἃ GGM 利ࢧڠgoogle.maps Object ɐ䵩ᄕ¡㫩ȒڤթȨӂÖ鹠 
+var arr_path=[]; // ˹Ե҇ἃ˓̃Ѻࢧڤ铍ӠĂ젵ԡ˹觠path  
+var makePolyline; // ˹Ե҇ἃ ࠑǡ쫑蹠˃꒧ዩ٠polylines  
+var objPolylines=[]; // ˹Ե҇ἃ˓̃Ѻࢧڤ钠object ÍǠpolylines  
+function initialize(position) { // ࠑǡ쫑ڡʴȡܹؕ蠠
+    GGM=new Object(google.maps); // ࢧڵ҇ἃ google.maps Object 利㹵҇ἃ GGM  
+    // ˹Ԩشᄔ遵鹢ͧἹؕ蠠
     var my_Latlng  = new GGM.LatLng(position.coords.latitude,position.coords.longitude);  
-    var my_mapTypeId=GGM.MapTypeId.ROADMAP; // กำหนดรูปแบบแผนที่ที่แสดง  
-    // กำหนด DOM object ที่จะเอาแผนที่ไปแสดง ที่นี้คือ div id=map_canvas  
+    var my_mapTypeId=GGM.MapTypeId.ROADMAP; // ˹ՃٻẺἹؕ踕颊ԧ  
+    // ˹ԠDOM object ؕ詐᎒Ἱؕ餻⊴Ǡؕ躕饗͠div id=map_canvas  
     var my_DivObj=$("#map_canvas")[0];   
-    // กำหนด Option ของแผนที่  
+    // ˹ԠOption Íȡܹؕ蠠
     var myOptions = {  
-        zoom: 16, // กำหนดขนาดการ zoom  
-        center: my_Latlng , // กำหนดจุดกึ่งกลาง  
-        mapTypeId:my_mapTypeId // กำหนดรูปแบบแผนที่  
+        zoom: 16, // ˹ԢڒԡӃ zoom  
+        center: my_Latlng , // ˹Ԩش觡ƒǠ 
+        mapTypeId:my_mapTypeId // ˹ՃٻẺἹؕ蠠
     };  
-    map = new GGM.Map(my_DivObj,myOptions);// สร้างแผนที่และเก็บตัวแปรไว้ในชื่อ map  
+    map = new GGM.Map(my_DivObj,myOptions);// ˃꒧Ἱؕ颅Ѡ§ڵ҇ἃ利㹪ب͠map  
       
-     var my_Marker = new GGM.Marker({ // สร้างตัว marker  
-        position: my_Latlng,  // กำหนดไว้ที่เดียวกับจุดกึ่งกลาง  
-        map: map, // กำหนดว่า marker นี้ใช้กับแผนที่ชื่อ instance ว่า map  
-        draggable:false, // กำหนดให้สามารถลากตัว marker นี้ได้  
-        title:"คลิกลากเพื่อหาตำแหน่งจุดที่ต้องการ!" // แสดง title เมื่อเอาเมาส์มาอยู่เหนือ  
+     var my_Marker = new GGM.Marker({ // ˃꒧֑Ǡmarker  
+        position: my_Latlng,  // ˹դȩؕ頴ւǡѺɘԡרǡƒǠ 
+        map: map, // ˹Շ钠marker ڕ꣪频ܹۡؕ諗鍠instance ȨҠmap  
+        draggable:false, // ˹գ̩˒öƒu҇ marker ڕꤴ頠
+        title:"Ņԡƒ ߗ鎋ҵԡ˹觨شؕ趩ͧá" // ⊴Ǡtitle ႗鎠Β႒ˬ΂ڨዹ؍  
     });  
     
       
-    // กำหนด event ให้กับตัว marker เมื่อสิ้นสุดการลากตัว marker ให้ทำงานอะไร  
+    // ˹Ԡevent 䌩ڵ҇ marker ႗鎊թڊشąҡ֑Ǡmarker 䌩ؓȒڍѤà 
     GGM.event.addListener(map, "bounds_changed", function() {  
-        var my_Point = my_Marker.getPosition(my_Latlng);  // หาตำแหน่งของตัว marker เมื่อกดลากแล้วปล่อย  
-        arr_path.push(my_Point); // เพิ่มค่าตำแหน่ง จากตัว marker ตำแหน่งล่าสุด  
-        map.panTo(my_Point);  // ให้แผนที่แสดงไปที่ตัว marker ล่าสุด  
+        var my_Point = my_Marker.getPosition(my_Latlng);  // ̒֓⋹觢֑ͧǠmarker ႗鍡Յҡ↩ǻƨ΂  
+        arr_path.push(my_Point); // ࿔遤钵ԡ˹觠ɒu҇ marker ֓⋹訅铊ش  
+        map.panTo(my_Point);  // 䌩Ἱؕ颊ԧ价֑֨Ǡmarker ƨӊش  
                   
-        makePolyline(arr_path); // ส่งค่าตำแหน่งใน array ไปสร้างเส้น polylines ในแผนที่  
+        makePolyline(arr_path); // ˨Ǥ钵ԡ˹訣٠array 伊ĩҧዩ٠polylines 㺡ܹؕ蠠
 //      console.log(arr_path);  
     });      
   
-    // กำหนด event ให้กับตัวแผนที่ เมื่อมีการเปลี่ยนแปลงการ zoom  
+    // ˹Ԡevent 䌩ڵ҇Ἱؕ衠鎁աӃ༅֨¹ἅǡӃ zoom  
     /*GGM.event.addListener(map, "zoom_changed", function() {  
-        $("#zoom_value").val(map.getZoom()); // เอาขนาด zoom ของแผนที่แสดงใน textbox id=zoom_value    
+        $("#zoom_value").val(map.getZoom()); // ᎒¹Ҵ zoom Íȡܹؕ颊ԧ㹠textbox id=zoom_value    
     });  */
 }  
 
@@ -202,13 +199,13 @@ function onError(error) {
 makePolyline=function(arr_path){  
 //  console.log(arr_path.length);  
     var i=arr_path.length-1;  
-    objPolylines[i] = new GGM.Polyline({ // กำหนดรูปแบบของเส้น polylines  
-        path: arr_path,// array ตำแหน่งที่เก็บค่า lat,lon  
-        strokeColor: "#FF0000", // สี  
-        strokeOpacity: 1.0, // ความโปร่งใส  
-        strokeWeight: 2 //ความหน้าของเส้น  
+    objPolylines[i] = new GGM.Polyline({ // ˹ՃٻẺÍȠ˩٠polylines  
+        path: arr_path,// array ֓⋹觷֨ࢧڤ钠lat,lon  
+        strokeColor: "#FF0000", // ˕  
+        strokeOpacity: 1.0, // ŇӁ⼃訣ʠ 
+        strokeWeight: 2 //ŇӁ˹꒢ͧዩ٠ 
     });   
-    objPolylines[i].setMap(map);    // สร้างเส้น polylines ในแผนที่  
+    objPolylines[i].setMap(map);    // ˃꒧ዩ٠polylines 㺡ܹؕ蠠
 //  console.log(arr_path);  
 //  console.log(objPolylines);  
 }  

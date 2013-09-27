@@ -1,50 +1,84 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Device Properties Example</title>
+    <title>Google Maps V3 Demostrate</title>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 
-    <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
-    <script type="text/javascript" charset="utf-8">
+    <script>
+      
+      function initWithMapStart() {
+        var latlng = new google.maps.LatLng(13.75, 100.517);
+        var mapOptions = {
+                            zoom: 12,
+                            center: latlng,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        };
+        var maps = new google.maps.Map( 
+                         document.getElementById('map-canvas'), 
+                         mapOptions
+                   );
 
-    // Wait for device API libraries to load
-    //
-    document.addEventListener("deviceready", onDeviceReady, false);
+        var marker = new google.maps.Marker({
+                            position: latlng,
+                            map: maps,
+                            animation: google.maps.Animation.DROP,
+                            title: "Welcome to Thailand"
+                        });
 
-    var watchID = null;
+        var info = new google.maps.InfoWindow({
+                            content: '<h1>Hello</h1>'
+                        });
+        google.maps.event.addListener(marker, 'click', function(){
+            info.open(maps, marker);
+        });
 
-    // device APIs are available
-    //
-    function onDeviceReady() {
-        // Throw an error if no update is received every 30 seconds
-									
-			/*watchID = navigator.geolocation.watchPosition(onSucces, onError, {
-			enableHighAccuracy: true,
-			timeout: Infinity,
-			maximumAge: 10000 //10000
-			});*/
-        var options = { timeout: 30000 };
-        watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
-    }
-
-    // onSuccess Geolocation
-    //
-    function onSuccess(position) {
-        var element = document.getElementById('geolocation');
-        element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
-                            'Longitude: ' + position.coords.longitude     + '<br />' +
-                            '<hr />'      + element.innerHTML;
-    }
-
-        // onError Callback receives a PositionError object
-        //
-        function onError(error) {
-            alert('code: '    + error.code    + '\n' +
-                  'message: ' + error.message + '\n');
+        if ( (typeof( navigator) != 'undefined') && !!navigator.geolocation ) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    panToCurrentLocation(position, maps, marker);
+                }, 
+                errorOccur
+            );
         }
+      }
 
+      function panToCurrentLocation(position, maps, marker) {
+          var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          maps.setCenter( latlng );
+          maps.panTo( latlng );
+
+          marker.setPosition( latlng );
+          marker.setAnimation( google.maps.Animation.DROP );
+      }
+
+      function errorOccur( error ) {
+          console.log( error );
+      }
     </script>
+
+    <style>
+      header,
+      footer {
+        text-align: center;
+      }
+      #map-canvas {
+        display: block;
+        margin: 20px auto;
+        height: 400px;
+        width: 640px;
+        background-color: #ccc;
+      }
+    </style>
   </head>
-  <body onLoad="onDeviceReady();">
-    <p id="geolocation">Watching geolocation...</p>
+  <body onload="initWithMapStart()">
+    <header>
+      <h1>Google Maps Demo</h1>
+    <header>
+    <article>
+      <div id="map-canvas"></div>
+    </article>
+    <footer>
+      <small><a href="http://we.in.th/">we.in.th</a></small>
+    </footer>
   </body>
 </html>
